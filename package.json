@@ -7,6 +7,7 @@
     "@polymer/iron-meta": "3.0.1",
     "@polymer/iron-resizable-behavior": "3.0.1",
     "@polymer/polymer": "3.4.1",
+    "@vaadin-component-factory/keyboard-shortcut-manager": "1.0.6",
     "@vaadin/accordion": "23.0.0-rc1",
     "@vaadin/app-layout": "23.0.0-rc1",
     "@vaadin/avatar": "23.0.0-rc1",
@@ -155,6 +156,7 @@
       "@polymer/iron-meta": "3.0.1",
       "@polymer/iron-resizable-behavior": "3.0.1",
       "@polymer/polymer": "3.4.1",
+      "@vaadin-component-factory/keyboard-shortcut-manager": "1.0.6",
       "@vaadin/accordion": "23.0.0-rc1",
       "@vaadin/app-layout": "23.0.0-rc1",
       "@vaadin/avatar": "23.0.0-rc1",
@@ -287,7 +289,7 @@
       "workbox-precaching": "6.4.2",
       "workbox-webpack-plugin": "6.4.2"
     },
-    "hash": "bfed3f2917d948f29b816964b95a22c1be8e8581239691454426411d12f6d653"
+    "hash": "902ded8f18d22d02698ee6ae75850ad8349be8a6ea1b345450a5480e45b89a4a"
   },
   "overrides": {
     "@vaadin/accordion": "$@vaadin/accordion",
@@ -399,6 +401,15 @@
     "@vaadin/vaadin-cookie-consent": "$@vaadin/vaadin-cookie-consent",
     "@vaadin/vaadin-crud": "$@vaadin/vaadin-crud",
     "@vaadin/vaadin-grid-pro": "$@vaadin/vaadin-grid-pro",
-    "@vaadin/vaadin-rich-text-editor": "$@vaadin/vaadin-rich-text-editor"
+    "@vaadin/vaadin-rich-text-editor": "$@vaadin/vaadin-rich-text-editor",
+    "@vaadin/bundles": "$@vaadin/bundles",
+    "@vaadin/map": "$@vaadin/map",
+    "@polymer/polymer": "$@polymer/polymer",
+    "@vaadin-component-factory/keyboard-shortcut-manager": "$@vaadin-component-factory/keyboard-shortcut-manager",
+    "construct-style-sheets-polyfill": "$construct-style-sheets-polyfill",
+    "@vaadin/common-frontend": "$@vaadin/common-frontend",
+    "lit": "$lit",
+    "@axa-ch/input-text": "$@axa-ch/input-text",
+    "date-fns": "$date-fns"
   }
 }
