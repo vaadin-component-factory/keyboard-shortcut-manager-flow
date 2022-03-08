@@ -14,7 +14,7 @@ export class KeyboardShortcutManagerFlow extends LitElement {
     static activeElement?: Element;
 
     render() {
-        return html`<h6>Hello World!</h6>`;
+        return html``;
     }
 
     protected firstUpdated() {
@@ -26,6 +26,7 @@ export class KeyboardShortcutManagerFlow extends LitElement {
         const ksm = new KeyboardShortcutManager({_jshortcuts, root: document.body, helpDialog: true});
         window.addEventListener("focus-next-invalid-field", () => KeyboardShortcutManagerFlow.focusNextInvalidField(this.target));
         window.addEventListener("focus-previous-invalid-field", () => KeyboardShortcutManagerFlow.focusPreviousInvalidField(this.target));
+        window.addEventListener("clear-all-fields", () => KeyboardShortcutManagerFlow.clearAllFields(this.target));
 
         // @ts-ignore
         ksm.add(this.shortcuts);
@@ -61,6 +62,13 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
     static focusPreviousInvalidField(target: string) {
         KeyboardShortcutManagerFlow.focusNextInvalidField(target, true);
+    }
+
+    static clearAllFields(target: string) {
+        document.querySelector(target)?.querySelectorAll('vaadin-text-field:not([disabled])').forEach((el: any) => {
+            el.value = '';
+            el.validate();
+        });
     }
 
 

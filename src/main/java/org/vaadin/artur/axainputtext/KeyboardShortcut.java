@@ -61,7 +61,8 @@ public class KeyboardShortcut {
 
     public enum Actions {
         focusNextInvalidField("focus-next-invalid-field"),
-        focusPreviousInvalidField("focus-previous-invalid-field");
+        focusPreviousInvalidField("focus-previous-invalid-field"),
+        clearAllFields("clear-all-fields");
 
         private final String evt;
 
