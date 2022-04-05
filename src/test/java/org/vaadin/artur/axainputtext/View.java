@@ -65,7 +65,7 @@ public class View extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
-        KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(verticalLayout);
+        KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
         keyboardShortcutManager
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8))
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K))
