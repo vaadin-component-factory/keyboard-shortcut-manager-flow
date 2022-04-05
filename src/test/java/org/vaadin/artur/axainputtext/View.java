@@ -12,7 +12,7 @@ import com.vaadin.flow.router.Route;
 
 @Route("")
 public class View extends VerticalLayout {
-    private VerticalLayout verticalLayout;
+    private final VerticalLayout verticalLayout;
 
     public View() {
         this.setId("main");
@@ -65,7 +65,7 @@ public class View extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
-        KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
+        KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(verticalLayout);
         keyboardShortcutManager
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8))
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K))
@@ -75,7 +75,7 @@ public class View extends VerticalLayout {
     }
 
 
-    private class Person {
+    private static class Person {
         private String name;
         private String address;
 
