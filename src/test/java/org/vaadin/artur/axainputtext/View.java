@@ -13,6 +13,7 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class View extends VerticalLayout {
     private final VerticalLayout verticalLayout;
+    private TextField address2;
 
     public View() {
         this.setId("main");
@@ -39,7 +40,8 @@ public class View extends VerticalLayout {
         TextField name2 = new TextField("Rouge name");
         name2.setInvalid(true);
 
-        TextField address2 = new TextField("Rouge address");
+        address2 = new TextField("Rouge address");
+        address2.setId("rad");
         address2.setInvalid(true);
 
         Binder<Person> binder = new Binder<>();
@@ -69,6 +71,7 @@ public class View extends VerticalLayout {
         keyboardShortcutManager
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8))
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K))
+                .addShortcut(new KeyboardShortcut(address2.getId().get(), KeyboardShortcut.Actions.focusElement, Key.CONTROL, Key.KEY_F))
                 .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8));
 
         keyboardShortcutManager.subscribe();

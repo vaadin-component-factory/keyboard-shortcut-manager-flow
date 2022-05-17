@@ -1,5 +1,9 @@
-import { customElement, html, LitElement, property } from 'lit-element';
-import { KeyboardShortcut, KeyboardShortcutManager, KeyboardShortcutUtils } from '@vaadin-component-factory/keyboard-shortcut-manager';
+import {customElement, html, LitElement, property} from 'lit-element';
+import {
+  KeyboardShortcut,
+  KeyboardShortcutManager,
+  KeyboardShortcutUtils
+} from '@vaadin-component-factory/keyboard-shortcut-manager';
 
 @customElement('keyboard-shortcut-manager')
 // @ts-ignore
@@ -27,6 +31,7 @@ export class KeyboardShortcutManagerFlow extends LitElement {
     window.addEventListener('focus-next-invalid-field', () => KeyboardShortcutUtils.focusNextInvalidField());
     window.addEventListener('focus-previous-invalid-field', () => KeyboardShortcutUtils.focusPreviousInvalidField());
     window.addEventListener('clear-all-fields', () => KeyboardShortcutManagerFlow.clearAllFields(this.target));
+    window.addEventListener('focus-element', () => KeyboardShortcutManagerFlow.focusElement(this.target));
 
     // @ts-ignore
     ksm.add(this.shortcuts);
@@ -62,6 +67,11 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
   static focusPreviousInvalidField(target: string) {
     KeyboardShortcutManagerFlow.focusNextInvalidField(target, true);
+  }
+
+  static focusElement(target: string) {
+    console.log(document.getElementById(target));
+    document.getElementById(target)?.focus();
   }
 
   static clearAllFields(target: string) {

@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 public class KeyboardShortcut {
     private String scope;
+    private String secondaryScope;
     private String keyBinding;
     private Actions handler;
     private String description;
@@ -62,6 +63,7 @@ public class KeyboardShortcut {
     public enum Actions {
         focusNextInvalidField("focus-next-invalid-field"),
         focusPreviousInvalidField("focus-previous-invalid-field"),
+        focusElement("focus-element"),
         clearAllFields("clear-all-fields");
 
         private final String evt;
