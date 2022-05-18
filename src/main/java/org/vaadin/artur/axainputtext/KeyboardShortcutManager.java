@@ -23,31 +23,30 @@ import java.util.Objects;
  */
 @Tag("keyboard-shortcut-manager")
 @JsModule("./keyboard-shortcut-manager.ts")
-@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "1.0.7-legacy-1")
+@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.0.3")
 @JsModule("@vaadin-component-factory/keyboard-shortcut-manager")
 public class KeyboardShortcutManager extends LitTemplate {
 
     private final Component component;
-    private final String target;
+    private Boolean helpDialog = true;
     private List<KeyboardShortcut> keyboardShortcuts = new ArrayList<>();
 
     /**
      * Creates a new KeyboardShortcutManager.
      */
     public KeyboardShortcutManager(Component component) {
-        // You can initialise any data required for the connected UI components here.
         this.component = component;
-        if (!component.getId().isPresent()) {
-            component.setId(component.getElement().getTag().toLowerCase().replaceAll("[^0-9_A-Za-z]+", ""));
-        }
+    }
 
-        this.target = "#" + component.getId().get();
+    public KeyboardShortcutManager(Component component, Boolean helpDialog) {
+        this(component);
+        this.helpDialog = helpDialog;
     }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
-        getElement().setProperty("target", target);
+        getElement().setProperty("helpDialog", helpDialog);
     }
 
     public void subscribe() {

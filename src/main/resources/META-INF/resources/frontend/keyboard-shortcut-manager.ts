@@ -1,20 +1,25 @@
-import {customElement, html, LitElement, property} from 'lit-element';
+import { customElement, html, LitElement, property } from 'lit-element';
 import {
   KeyboardShortcut,
   KeyboardShortcutManager,
-  KeyboardShortcutUtils
+  KeyboardShortcutUtils,
+  TargetElement
 } from '@vaadin-component-factory/keyboard-shortcut-manager';
 
-@customElement('keyboard-shortcut-manager')
-// @ts-ignore
-export class KeyboardShortcutManagerFlow extends LitElement {
-  @property()
-  // @ts-ignore
-  target: string = 'body';
-  @property()
-  // @ts-ignore
-  shortcuts: KeyboardShortcut[];
+export enum Actions {
+  helpDialog = 'help-dialog',
+  focusNextInvalidField = 'focus-next-invalid-field',
+  focusPreviousInvalidField = 'focus-previous-invalid-field',
+  clearAllFields = 'clear-all-fields',
+  focusElement = 'focus-element'
+}
 
+@customElement('keyboard-shortcut-manager')
+export class KeyboardShortcutManagerFlow extends LitElement {
+  @property({ type: Boolean }) helpDialog = true;
+  @property({ type: Array }) shortcuts?: KeyboardShortcut[];
+
+  private ksm?: KeyboardShortcutManager;
   static activeElement?: Element;
 
   render() {
@@ -22,75 +27,66 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   }
 
   protected firstUpdated() {
-    window.addEventListener('help-dialog', () => ksm.toggleHelpDialog());
+    this.ksm = new KeyboardShortcutManager({ helpDialog: this.helpDialog });
 
-    const _jshortcuts = this.shortcuts;
-
-    // @ts-ignore
-    const ksm = new KeyboardShortcutManager({ _jshortcuts, root: document.body, helpDialog: true });
-    window.addEventListener('focus-next-invalid-field', () => KeyboardShortcutUtils.focusNextInvalidField());
-    window.addEventListener('focus-previous-invalid-field', () => KeyboardShortcutUtils.focusPreviousInvalidField());
-    window.addEventListener('clear-all-fields', () => KeyboardShortcutManagerFlow.clearAllFields(this.target));
-    window.addEventListener('focus-element', () => KeyboardShortcutManagerFlow.focusElement(this.target));
-
-    // @ts-ignore
-    ksm.add(this.shortcuts);
-
-    console.log('ksm.shortcuts: ', ksm.shortcuts);
-
-    ksm.subscribe();
-  }
-
-  private static validateField(field: any): boolean {
-    return field.getAttribute('invalid') !== null;
-  }
-
-  static focusNextInvalidField(target: string, reverse = false) {
-    const root = document.querySelector(target);
-    let focusField: HTMLElement | null = null;
-    // @ts-ignore
-    let elements = Array.from(root.querySelectorAll('*').values()) as HTMLElement[];
-
-    elements = elements.filter((el: any) => el.checkValidity && !el.inputElement && KeyboardShortcutManagerFlow.validateField(el));
-
-    if (elements.length) {
-      if (reverse) {
-        elements = elements.reverse();
-      }
-      const currentIndex = elements.findIndex((el) => el === KeyboardShortcutManagerFlow.activeElement);
-      const nextIndex = currentIndex > -1 ? currentIndex + 1 : 0;
-      focusField = nextIndex < elements.length ? elements[nextIndex] : elements[0];
-      focusField?.focus();
-      KeyboardShortcutManagerFlow.activeElement = focusField;
+    if (this.shortcuts) {
+      this.ksm.add(this.shortcuts);
+      console.debug('KSM.shortcuts: ', this.ksm.shortcuts);
     }
+
+    this.ksm.subscribe();
+    this.addActionListeners();
   }
 
-  static focusPreviousInvalidField(target: string) {
-    KeyboardShortcutManagerFlow.focusNextInvalidField(target, true);
+  private addActionListeners() {
+    this.shortcuts?.forEach(shortcut => {
+      if (shortcut.scope) {
+        const scope = shortcut.scope as TargetElement;
+        if (scope) {
+          scope.addEventListener(`${shortcut.handler}`, () => {
+            const scope = shortcut.scope === window ? document : (shortcut.scope as HTMLElement);
+            const handler = shortcut.handler.toString().includes(Actions.focusElement)
+              ? Actions.focusElement
+              : shortcut.handler;
+            switch (handler) {
+              case Actions.helpDialog:
+                this.ksm?.toggleHelpDialog();
+                break;
+              case Actions.focusNextInvalidField:
+                KeyboardShortcutUtils.focusNextInvalidField(scope);
+                break;
+              case Actions.focusPreviousInvalidField:
+                KeyboardShortcutUtils.focusPreviousInvalidField(scope);
+                break;
+              case Actions.clearAllFields:
+                KeyboardShortcutManagerFlow.clearAllFields(scope);
+                break;
+              case Actions.focusElement:
+                const targetId = shortcut.handler.toString().replace(Actions.focusElement, '');
+                KeyboardShortcutManagerFlow.focusElement(targetId);
+                break;
+            }
+          });
+        } else {
+          console.warn('Scope element not found.');
+        }
+      }
+    });
   }
 
-  static focusElement(target: string) {
-    console.log(document.getElementById(target));
-    document.getElementById(target)?.focus();
+  private static focusElement(targetId: string) {
+    const element = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
+    if (element) element.focus();
+    else console.warn(`Element with id ${targetId} not found.`);
   }
 
-  static clearAllFields(target: string) {
-    const exclude = ['a', 'button'];
-    const notDisabledFields = KeyboardShortcutUtils.InputFields.split(',')
-      .map((f) => f.replace(/\s+/g, ''))
-      .filter((field) => !exclude.includes(field))
-      .map((field) => `${field}:not([disabled])`)
-      .join();
-    document
-      .querySelector(target)
-      ?.querySelectorAll(notDisabledFields)
-      .forEach((el: any) => {
-        el.value = '';
-        el.validate();
-      });
+  private static clearAllFields(scope: Document | HTMLElement = document) {
+    KeyboardShortcutUtils.getVaadinInputFields(scope).forEach((el: any) => {
+      el.value = '';
+      el.invalid = !el.validate();
+    });
   }
 
-  // Remove this method to render the contents of this view inside Shadow DOM
   createRenderRoot() {
     return this;
   }

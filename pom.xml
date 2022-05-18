@@ -6,7 +6,7 @@
     <groupId>org.vaadin.artur</groupId>
     <artifactId>keyboard-shortcut-manager-flow</artifactId>
     <name>KeyboardShortcutManagerFlow</name>
-    <version>1.0</version>
+    <version>23.0.0</version>
     <packaging>jar</packaging>
 
     <properties>

@@ -1,0 +1,13 @@
+.person {
+  transition: all 0.2s;
+}
+
+.person:hover {
+  box-shadow: inset -1px -1px 0 1px var(--lumo-shade-10pct), inset 1px 1px 0 1px var(--lumo-shade-10pct);
+}
+
+.person:focus-within {
+  background-color: var(--lumo-shade-5pct);
+  padding-left: var(--lumo-space-s);
+  padding-bottom: var(--lumo-space-s);
+}

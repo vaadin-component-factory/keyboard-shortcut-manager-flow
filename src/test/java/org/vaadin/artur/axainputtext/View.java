@@ -2,6 +2,7 @@ package org.vaadin.artur.axainputtext;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,8 +12,10 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
 
 @Route("")
+@CssImport(value = "view-styles.css")
 public class View extends VerticalLayout {
-    private final VerticalLayout verticalLayout;
+    private final VerticalLayout person1Container;
+    private final VerticalLayout person2Container;
     private TextField address2;
 
     public View() {
@@ -30,18 +33,19 @@ public class View extends VerticalLayout {
         TextField name = new TextField("name");
         TextField address = new TextField("address");
 
-        verticalLayout = new VerticalLayout(name, address);
-        verticalLayout.setId("sub");
-        verticalLayout.setMargin(false);
-        verticalLayout.setPadding(false);
-        verticalLayout.setSpacing(false);
+        person1Container = new VerticalLayout(new H6("Person 1"), name, address);
+        person1Container.setId("person-1");
+        person1Container.addClassName("person");
+        person1Container.setMargin(false);
+        person1Container.setPadding(false);
+        person1Container.setSpacing(false);
+        person1Container.getElement().setAttribute("tabindex", "0");
 
-
-        TextField name2 = new TextField("Rouge name");
+        TextField name2 = new TextField("name");
         name2.setInvalid(true);
 
-        address2 = new TextField("Rouge address");
-        address2.setId("rad");
+        address2 = new TextField("address");
+        address2.setId("address-2");
         address2.setInvalid(true);
 
         Binder<Person> binder = new Binder<>();
@@ -60,8 +64,19 @@ public class View extends VerticalLayout {
                 .bind(Person::getAddress, Person::setAddress);
         binder2.validate();
 
+        person2Container = new VerticalLayout(new H6("Person 2"), name2, address2);
+        person2Container.setId("person-2");
+        person2Container.addClassName("person");
+        person2Container.setMargin(false);
+        person2Container.setPadding(false);
+        person2Container.setSpacing(false);
+        person2Container.getElement().setAttribute("tabindex", "0");
+
+        verticalLayout1.setId("person-2");
+        verticalLayout1.addClassName("person");
         verticalLayout1.setSpacing(false);
-        verticalLayout1.add(verticalLayout, new H6("Person 2"), name2, address2);
+        verticalLayout1.getElement().setAttribute("tabindex", "0");
+        verticalLayout1.add(person1Container, person2Container);
     }
 
     @Override
@@ -69,10 +84,11 @@ public class View extends VerticalLayout {
         super.onAttach(attachEvent);
         KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
         keyboardShortcutManager
-                .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8))
-                .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K))
-                .addShortcut(new KeyboardShortcut(address2.getId().get(), KeyboardShortcut.Actions.focusElement, Key.CONTROL, Key.KEY_F))
-                .addShortcut(new KeyboardShortcut(KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8));
+                .addShortcut(new KeyboardShortcut("Open help Dialog.", "", KeyboardShortcut.Actions.helpDialog.toString(), Key.CONTROL, Key.SHIFT, Key.SLASH))
+                .addShortcut(new KeyboardShortcut("Focus next invalid field.", "", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8))
+                .addShortcut(new KeyboardShortcut("Focus previous invalid field.", "", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8))
+                .addShortcut(new KeyboardShortcut("Clear all fields (only Person 1).", "person-1", KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K))
+                .addShortcut(new KeyboardShortcut("Focus element: #" + address2.getId().get(), "person-2", KeyboardShortcut.Actions.focusElement + address2.getId().get(), Key.CONTROL, Key.KEY_F));
 
         keyboardShortcutManager.subscribe();
     }
@@ -81,9 +97,6 @@ public class View extends VerticalLayout {
     private static class Person {
         private String name;
         private String address;
-
-        public Person() {
-        }
 
         public String getName() {
             return name;
