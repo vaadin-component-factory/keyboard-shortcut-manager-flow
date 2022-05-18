@@ -35,7 +35,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package -Pproduction --file pom.xml
       - name: Rename the war and remove the version
-        run: mv ${{ secrets.DEMO_NAME }}/target/${{ secrets.DEMO_NAME }}*.jar ${{ secrets.DEMO_NAME }}.jar
+        run: mv ${{ secrets.DEMO_NAME }}/target/${{ secrets.DEMO_NAME }}*.war ${{ secrets.DEMO_NAME }}.war
       - name: SCP to the server
         # You may pin to the exact commit or the version.
         # uses: appleboy/scp-action@edc8ec9139a2687bcebf0249d0352ff2a988df00
@@ -52,5 +52,5 @@ jobs:
           # target path on the server
           target: webapps/
           # scp file list
-          source: ${{ secrets.DEMO_NAME }}.jar
+          source: ${{ secrets.DEMO_NAME }}.war
           fingerprint: ${{ secrets.APP_FI_SHA256 }}
