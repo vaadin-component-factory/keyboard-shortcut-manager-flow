@@ -1,4 +1,4 @@
-package org.vaadin.artur.axainputtext;
+package org.vaadin.componentfactory;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
@@ -12,13 +12,13 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
 
 @Route("")
-@CssImport(value = "view-styles.css")
-public class View extends VerticalLayout {
+@CssImport(value = "demo-styles.css")
+public class KeyboardShortcutDemoView extends VerticalLayout {
     private final VerticalLayout person1Container;
     private final VerticalLayout person2Container;
     private TextField address2;
 
-    public View() {
+    public KeyboardShortcutDemoView() {
         this.setId("main");
         H3 shortcutManagerH3 = new H3("VCF Keyboard Shortcut Manager");
         shortcutManagerH3.getStyle().set("margin", "0");
@@ -80,13 +80,15 @@ public class View extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
         KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
-        keyboardShortcutManager
-                .addShortcut(new KeyboardShortcut("Open help Dialog.", "", KeyboardShortcut.Actions.helpDialog.toString(), Key.CONTROL, Key.SHIFT, Key.SLASH))
-                .addShortcut(new KeyboardShortcut("Focus next invalid field.", "", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8))
-                .addShortcut(new KeyboardShortcut("Focus previous invalid field.", "", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8))
-                .addShortcut(new KeyboardShortcut("Clear all fields (only Person 1).", "person-1", KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K))
-                .addShortcut(new KeyboardShortcut("Focus element: #" + address2.getId().get(), "person-2", KeyboardShortcut.Actions.focusElement + address2.getId().get(), Key.CONTROL, Key.KEY_F));
+        KeyboardShortcut[] shortcuts = new KeyboardShortcut[] {
+            new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.CONTROL, Key.SHIFT, Key.SLASH),
+            new KeyboardShortcut("", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8),
+            new KeyboardShortcut("", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8),
+            new KeyboardShortcut("person-1", KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K),
+            new KeyboardShortcut(address2.getId().get(), "person-2", KeyboardShortcut.Actions.focusElement, Key.CONTROL, Key.KEY_F)
+        };
 
+        keyboardShortcutManager.addShortcut(shortcuts);
         keyboardShortcutManager.subscribe();
     }
 

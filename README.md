@@ -1,34 +1,45 @@
-# AXA Input Text
+# Keyboard Shortcut Manager for Vaadin 23
 
-Vaadin Java integration of `@axa-ch/input-text`.
+[Live Demo ↗](https://incubator.app.fi/keyboard-shortcut-manager-demo/keyboard-shortcut-manager)
 
-When creating a starter project from vaadin.com/start, a "npm module name"
-should be specified to create a Java component for it. If "npm module name" is left empty, a Java
-component is created for Lit based `axa-input-text` component.
+[keyboard-shortcut-manager](https://www.npmjs.com/package/@vaadin-component-factory/keyboard-shortcut-manager) is A modern library for managing keyboard shortcuts in a Vaadin application (or in any framework).
 
-## Development instructions
+## Basic Usage
 
-JavaScript modules can either be published as an NPM package or be kept as local 
-files in your project. The local JavaScript modules should be put in 
-`src/main/resources/META-INF/frontend` so that they are automatically found and 
-used in the using application.
+```java
+KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
+KeyboardShortcut[] shortcuts = new KeyboardShortcut[] {
+    new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.CONTROL, Key.SHIFT, Key.SLASH),
+    new KeyboardShortcut("", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8),
+    new KeyboardShortcut("", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8),
+    new KeyboardShortcut("scope-element-1", KeyboardShortcut.Actions.clearAllFields, Key.CONTROL, Key.KEY_K),
+    new KeyboardShortcut("focus-element", "scope-element-2", KeyboardShortcut.Actions.focusElement, Key.CONTROL, Key.KEY_F)
+};
 
-If the modules are published then the package should be noted in the component 
-using the `@NpmPackage` annotation in addition to using `@JsModule` annotation.
-
-
-Starting the test/demo server:
-1. Run `mvn jetty:run`.
-2. Open http://localhost:8080 in the browser.
-
-## Publishing to Vaadin Directory
-
-You can create the zip package needed for [Vaadin Directory](https://vaadin.com/directory/) using
-```
-mvn versions:set -DnewVersion=1.0.0 # You cannot publish snapshot versions 
-mvn install -Pdirectory
+keyboardShortcutManager.addShortcut(shortcuts);
+keyboardShortcutManager.subscribe();
 ```
 
-The package is created as `target/axa-input-text-1.0.0.zip`
+# How to run the demo?
 
-For more information or to upload the package, visit https://vaadin.com/directory/my-components?uploadNewComponent
+The Demo can be run executing: `mvn`
+
+After server startup, you'll be able find the demo at [http://localhost:8080](http://localhost:8080)
+
+## License & Author
+
+This Add-on is distributed under Apache 2. For license terms, see LICENSE.txt.
+
+Component Factory Enhanced Dialog is written by Vaadin Ltd.
+
+## Setting up for development:
+
+Clone the project in GitHub (or fork it if you plan on contributing)
+
+```
+git clone git@github.com:vaadin-component-factory/keyboard-shortcut-manager-flow.git
+```
+
+to install project to your maven repository run
+
+`mvn install`

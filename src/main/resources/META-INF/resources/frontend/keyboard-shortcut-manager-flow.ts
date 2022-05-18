@@ -1,4 +1,5 @@
-import { customElement, html, LitElement, property } from 'lit-element';
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import {
   KeyboardShortcut,
   KeyboardShortcutManager,
@@ -14,17 +15,13 @@ export enum Actions {
   focusElement = 'focus-element'
 }
 
-@customElement('keyboard-shortcut-manager')
+@customElement('keyboard-shortcut-manager-flow')
 export class KeyboardShortcutManagerFlow extends LitElement {
   @property({ type: Boolean }) helpDialog = true;
   @property({ type: Array }) shortcuts?: KeyboardShortcut[];
 
   private ksm?: KeyboardShortcutManager;
   static activeElement?: Element;
-
-  render() {
-    return html``;
-  }
 
   protected firstUpdated() {
     this.ksm = new KeyboardShortcutManager({ helpDialog: this.helpDialog });

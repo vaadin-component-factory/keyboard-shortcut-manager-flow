@@ -1,4 +1,4 @@
-package org.vaadin.artur.axainputtext;
+package org.vaadin.componentfactory;
 
 import com.vaadin.flow.component.Key;
 
@@ -16,8 +16,10 @@ public class KeyboardShortcut {
      * @param handler
      * @param keyBinding
      */
-    public KeyboardShortcut(String description, String scope, Actions handler, Key... keyBinding) {
-        this(description, scope, handler.getEvt(), keyBinding);
+    public KeyboardShortcut(String focusElement, String scope, Actions handler, Key... keyBinding) {
+        this(scope, handler.getEvt(), keyBinding);
+        this.handler = KeyboardShortcut.getActionHandler(handler, focusElement);
+        this.description = KeyboardShortcut.getActionDescription(handler, scope, focusElement);
     }
 
     public KeyboardShortcut(String description, String scope, String handler, Key... keyBinding) {
@@ -31,7 +33,7 @@ public class KeyboardShortcut {
     }
 
     public KeyboardShortcut(String scope, Actions handler, Key... keyBinding) {
-        this(scope, handler.getEvt(), keyBinding);
+        this(KeyboardShortcut.getActionDescription(handler, scope), scope, handler.getEvt(), keyBinding);
     }
 
     public KeyboardShortcut(String handler, Key... keyBinding) {
@@ -80,12 +82,41 @@ public class KeyboardShortcut {
         this.description = description;
     }
 
+    private static String getActionDescription(Actions handler, String scope, String decription) {
+        String newDescription = decription;
+        if (handler.equals(Actions.helpDialog)) {
+            newDescription = "Open help Dialog.";
+        } else if (handler.equals(Actions.focusNextInvalidField)) {
+            newDescription = "Focus next invalid field.";
+        } else if (handler.equals(Actions.focusPreviousInvalidField)) {
+            newDescription = "Focus previous invalid field.";
+        } else if (handler.equals(Actions.clearAllFields)) {
+            newDescription = "Clear all fields.";
+        } else if (!decription.isEmpty() && handler.getEvt().indexOf(Actions.focusElement.getEvt()) >= 0) {
+            newDescription = "Focus element: #";
+            newDescription += decription;
+        }
+        return newDescription;
+    }
+
+    private static String getActionHandler(Actions handler, String decription) {
+        String newHandler = handler.getEvt();
+        if (handler.equals(Actions.focusElement)) {
+            newHandler += decription;
+        }
+        return newHandler;
+    }
+
+    private static String getActionDescription(Actions handler, String scope) {
+        return KeyboardShortcut.getActionDescription(handler, scope, "");
+    }
+
     public enum Actions {
         helpDialog("help-dialog"),
         focusNextInvalidField("focus-next-invalid-field"),
         focusPreviousInvalidField("focus-previous-invalid-field"),
-        focusElement("focus-element"),
-        clearAllFields("clear-all-fields");
+        clearAllFields("clear-all-fields"),
+        focusElement("focus-element");
 
         private final String evt;
 

@@ -1,4 +1,4 @@
-package org.vaadin.artur.axainputtext;
+package org.vaadin.componentfactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.littemplate.LitTemplate;
+
 import elemental.json.Json;
 import elemental.json.JsonArray;
 
@@ -21,8 +22,8 @@ import java.util.Objects;
  * Designer will add and remove fields with @Id mappings but
  * does not overwrite or otherwise change this file.
  */
-@Tag("keyboard-shortcut-manager")
-@JsModule("./keyboard-shortcut-manager.ts")
+@Tag("keyboard-shortcut-manager-flow")
+@JsModule("./keyboard-shortcut-manager-flow.ts")
 @NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.0.4")
 @JsModule("@vaadin-component-factory/keyboard-shortcut-manager")
 public class KeyboardShortcutManager extends LitTemplate {
@@ -54,8 +55,10 @@ public class KeyboardShortcutManager extends LitTemplate {
         component.getUI().ifPresent(ui -> ui.add(this));
     }
 
-    public KeyboardShortcutManager addShortcut(KeyboardShortcut keyboardShortcut) {
-        keyboardShortcuts.add(keyboardShortcut);
+    public KeyboardShortcutManager addShortcut(KeyboardShortcut ...keyboardShortcuts) {
+        for (KeyboardShortcut s : keyboardShortcuts) {
+            this.keyboardShortcuts.add(s);
+        }
         return this;
     }
 
