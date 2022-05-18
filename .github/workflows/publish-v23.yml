@@ -1,13 +1,17 @@
 # This workflow will build a Java project with Maven
+
 name: Java CI with Maven
+
 on:
   push:
-    branches: [main]
+    branches: [v23]
   pull_request:
-    branches: [main]
+    branches: [v23]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Cache local Maven repository
         uses: actions/cache@v2

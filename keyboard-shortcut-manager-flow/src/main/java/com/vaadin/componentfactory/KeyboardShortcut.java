@@ -1,4 +1,24 @@
-package org.vaadin.componentfactory;
+package com.vaadin.componentfactory;
+
+/*
+ * #%L
+ * keyboard-shortcut-manager-flow
+ * %%
+ * Copyright (C) 2020 Vaadin Ltd
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 import com.vaadin.flow.component.Key;
 
@@ -11,7 +31,7 @@ public class KeyboardShortcut {
     private String keyBinding;
 
     /**
-     * @param description Description of the shortcut.
+     * @param focusElement Description of the shortcut.
      * @param scope String id of scope element. Default scope is <b>window</b>. eg. "element-id".
      * @param handler
      * @param keyBinding
