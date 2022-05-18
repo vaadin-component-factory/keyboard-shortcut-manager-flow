@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 @Tag("keyboard-shortcut-manager")
 @JsModule("./keyboard-shortcut-manager.ts")
-@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.0.3")
+@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.0.4")
 @JsModule("@vaadin-component-factory/keyboard-shortcut-manager")
 public class KeyboardShortcutManager extends LitTemplate {
 

@@ -39,7 +39,6 @@ public class View extends VerticalLayout {
         person1Container.setMargin(false);
         person1Container.setPadding(false);
         person1Container.setSpacing(false);
-        person1Container.getElement().setAttribute("tabindex", "0");
 
         TextField name2 = new TextField("name");
         name2.setInvalid(true);
@@ -70,10 +69,8 @@ public class View extends VerticalLayout {
         person2Container.setMargin(false);
         person2Container.setPadding(false);
         person2Container.setSpacing(false);
-        person2Container.getElement().setAttribute("tabindex", "0");
+        person2Container.getElement();
 
-        verticalLayout1.setId("person-2");
-        verticalLayout1.addClassName("person");
         verticalLayout1.setSpacing(false);
         verticalLayout1.getElement().setAttribute("tabindex", "0");
         verticalLayout1.add(person1Container, person2Container);

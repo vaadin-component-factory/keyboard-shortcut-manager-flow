@@ -21,8 +21,7 @@
     "baseUrl": "frontend",
     "paths": {
       "Frontend/*": ["*"]
-    },
-    "skipLibCheck": true
+    }
   },
   "include": ["**/frontend/**/*.ts", "frontend/index.js", "types.d.ts"],
   "exclude": []
