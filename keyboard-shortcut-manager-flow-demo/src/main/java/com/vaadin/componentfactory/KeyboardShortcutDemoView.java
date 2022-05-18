@@ -1,4 +1,4 @@
-package org.vaadin.componentfactory;
+package com.vaadin.componentfactory;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
