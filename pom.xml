@@ -7,17 +7,16 @@
     <artifactId>keyboard-shortcut-manager-flow</artifactId>
     <name>KeyboardShortcutManagerFlow</name>
     <version>23.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <vaadin.version>23.0.0</vaadin.version>
-
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <jetty.version>9.4.28.v20200408</jetty.version>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
     <organization>
         <name>###author###</name>
