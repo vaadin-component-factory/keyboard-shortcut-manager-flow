@@ -1,4 +1,4 @@
-package com.vaadin.componentfactory;
+package org.vaadin.addons;
 
 /*
  * #%L

@@ -1,4 +1,4 @@
-package com.vaadin.componentfactory;
+package org.vaadin.addons;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
@@ -10,6 +10,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
+import org.vaadin.addons.KeyboardShortcut;
+import org.vaadin.addons.KeyboardShortcutManager;
 
 @Route("")
 @CssImport(value = "demo-styles.css")
