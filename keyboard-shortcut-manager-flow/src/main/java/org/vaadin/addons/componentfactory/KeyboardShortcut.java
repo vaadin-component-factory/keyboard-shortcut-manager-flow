@@ -1,4 +1,4 @@
-package org.vaadin.addons;
+package org.vaadin.addons.componentfactory;
 
 /*
  * #%L
@@ -31,37 +31,68 @@ public class KeyboardShortcut {
     private String keyBinding;
 
     /**
-     * @param focusElement Description of the shortcut.
-     * @param scope String id of scope element. Default scope is <b>window</b>. eg. "element-id".
-     * @param handler
-     * @param keyBinding
+     * @param selector   Id/selector for focus element actions.
+     * @param scope      String id of scope element. Default scope is <b>window</b>.
+     *                   eg. "element-id".
+     * @param handler    Action to be used in this shortcut.
+     * @param keyBinding Key binding descriptions.
      */
-    public KeyboardShortcut(String focusElement, String scope, Actions handler, Key... keyBinding) {
+    public KeyboardShortcut(String selector, String scope, Actions handler, Key... keyBinding) {
         this(scope, handler.getEvt(), keyBinding);
-        this.handler = KeyboardShortcut.getActionHandler(handler, focusElement);
-        this.description = KeyboardShortcut.getActionDescription(handler, scope, focusElement);
+        this.handler = KeyboardShortcut.getActionHandler(handler, selector);
+        this.description = KeyboardShortcut.getActionDescription(handler, selector);
     }
 
+    /**
+     * @param description Description of the shortcut.
+     * @param scope       String id of scope element. Default scope is
+     *                    <b>window</b>. eg. "element-id".
+     * @param handler     String name of custom event dispatched by the keyboard
+     *                    shortcut.
+     * @param keyBinding  Key binding descriptions.
+     */
     public KeyboardShortcut(String description, String scope, String handler, Key... keyBinding) {
         this(scope, handler, keyBinding);
         this.description = description;
     }
 
+    /**
+     * @param scope      String id of scope element. Default scope is
+     *                   <b>window</b>. eg. "element-id".
+     * @param handler    String name of custom event dispatched by the keyboard
+     *                   shortcut.
+     * @param keyBinding Key binding descriptions.
+     */
     public KeyboardShortcut(String scope, String handler, Key... keyBinding) {
         this(handler, keyBinding);
         this.scope = scope;
     }
 
+    /**
+     * @param scope      String id of scope element. Default scope is
+     *                   <b>window</b>. eg. "element-id".
+     * @param handler    Action to be used in this shortcut.
+     * @param keyBinding Key binding descriptions.
+     */
     public KeyboardShortcut(String scope, Actions handler, Key... keyBinding) {
-        this(KeyboardShortcut.getActionDescription(handler, scope), scope, handler.getEvt(), keyBinding);
+        this(KeyboardShortcut.getActionDescription(handler), scope, handler.getEvt(), keyBinding);
     }
 
+    /**
+     * @param handler    String name of custom event dispatched by the keyboard
+     *                   shortcut.
+     * @param keyBinding Key binding descriptions.
+     */
     public KeyboardShortcut(String handler, Key... keyBinding) {
         this.keyBinding = Arrays.stream(keyBinding).reduce("", (a, k) -> a + "+" + k.getKeys().get(0), String::concat);
         this.keyBinding = this.keyBinding.replaceFirst("\\+", "");
         this.handler = handler;
     }
 
+    /**
+     * @param handler    Action to be used in this shortcut.
+     * @param keyBinding Key binding descriptions.
+     */
     public KeyboardShortcut(Actions handler, Key... keyBinding) {
         this(handler.getEvt(), keyBinding);
     }
@@ -102,7 +133,7 @@ public class KeyboardShortcut {
         this.description = description;
     }
 
-    private static String getActionDescription(Actions handler, String scope, String decription) {
+    private static String getActionDescription(Actions handler, String decription) {
         String newDescription = decription;
         if (handler.equals(Actions.helpDialog)) {
             newDescription = "Open help Dialog.";
@@ -112,23 +143,35 @@ public class KeyboardShortcut {
             newDescription = "Focus previous invalid field.";
         } else if (handler.equals(Actions.clearAllFields)) {
             newDescription = "Clear all fields.";
+        } else if (!decription.isEmpty() && handler.getEvt().indexOf(Actions.clickElement.getEvt()) >= 0) {
+            newDescription = "Click element: #";
+            newDescription += decription;
         } else if (!decription.isEmpty() && handler.getEvt().indexOf(Actions.focusElement.getEvt()) >= 0) {
             newDescription = "Focus element: #";
+            newDescription += decription;
+        } else if (!decription.isEmpty() && handler.getEvt().indexOf(Actions.focusNextElement.getEvt()) >= 0) {
+            newDescription = "Focus next element in: ";
+            newDescription += decription;
+        } else if (!decription.isEmpty() && handler.getEvt().indexOf(Actions.focusPreviousElement.getEvt()) >= 0) {
+            newDescription = "Focus previous element in: ";
             newDescription += decription;
         }
         return newDescription;
     }
 
+    private static String getActionDescription(Actions handler) {
+        return KeyboardShortcut.getActionDescription(handler, "");
+    }
+
     private static String getActionHandler(Actions handler, String decription) {
         String newHandler = handler.getEvt();
-        if (handler.equals(Actions.focusElement)) {
+        if (handler.equals(Actions.clickElement)
+                || handler.equals(Actions.focusElement)
+                || handler.equals(Actions.focusNextElement)
+                || handler.equals(Actions.focusPreviousElement)) {
             newHandler += decription;
         }
         return newHandler;
-    }
-
-    private static String getActionDescription(Actions handler, String scope) {
-        return KeyboardShortcut.getActionDescription(handler, scope, "");
     }
 
     public enum Actions {
@@ -136,7 +179,10 @@ public class KeyboardShortcut {
         focusNextInvalidField("focus-next-invalid-field"),
         focusPreviousInvalidField("focus-previous-invalid-field"),
         clearAllFields("clear-all-fields"),
-        focusElement("focus-element");
+        clickElement("click-element"),
+        focusElement("focus-element"),
+        focusNextElement("focus-next-element"),
+        focusPreviousElement("focus-previous-element");
 
         private final String evt;
 
@@ -154,4 +200,3 @@ public class KeyboardShortcut {
         }
     }
 }
-

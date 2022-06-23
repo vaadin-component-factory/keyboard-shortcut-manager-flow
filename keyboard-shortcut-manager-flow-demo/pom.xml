@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.addons</groupId>
+    <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow-demo</artifactId>
-    <version>23.0.2</version>
+    <version>23.1.0</version>
 
     <name>Keyboard Shortcut Manager Demo</name>
     <packaging>war</packaging>
@@ -18,7 +18,7 @@
     </organization>
 
     <properties>
-        <vaadin.version>23.0.9</vaadin.version>
+        <vaadin.version>23.1.0</vaadin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,7 +104,7 @@
         </dependency>
 
        <dependency>
-           <groupId>org.vaadin.addons</groupId>
+           <groupId>org.vaadin.addons.componentfactory</groupId>
            <artifactId>keyboard-shortcut-manager-flow</artifactId>
            <version>${project.version}</version>
        </dependency>

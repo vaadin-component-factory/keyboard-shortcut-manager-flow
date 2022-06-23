@@ -1,4 +1,4 @@
-package org.vaadin.addons;
+package org.vaadin.addons.componentfactory;
 
 /*
  * #%L
@@ -44,7 +44,7 @@ import java.util.Objects;
  */
 @Tag("keyboard-shortcut-manager-flow")
 @JsModule("./keyboard-shortcut-manager-flow.ts")
-@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.0.4")
+@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.1.1")
 public class KeyboardShortcutManager extends LitTemplate {
 
     private final Component component;
@@ -74,7 +74,7 @@ public class KeyboardShortcutManager extends LitTemplate {
         component.getUI().ifPresent(ui -> ui.add(this));
     }
 
-    public KeyboardShortcutManager addShortcut(KeyboardShortcut ...keyboardShortcuts) {
+    public KeyboardShortcutManager addShortcut(KeyboardShortcut... keyboardShortcuts) {
         for (KeyboardShortcut s : keyboardShortcuts) {
             this.keyboardShortcuts.add(s);
         }
