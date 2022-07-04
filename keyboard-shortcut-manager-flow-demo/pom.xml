@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>keyboard-shortcut-manager-flow-root</artifactId>
+        <groupId>org.vaadin.addons.componentfactory</groupId>
+        <version>23.1.0</version>
+    </parent>
+
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow-demo</artifactId>
     <version>23.1.0</version>

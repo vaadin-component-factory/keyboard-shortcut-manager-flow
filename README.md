@@ -24,16 +24,8 @@ keyboardShortcutManager.subscribe();
 
 # How to run the demo?
 
-To run the demo first change your active directory to the demo folder:
-
 ```
-cd keyboard-shortcut-manager-flow-demo/
-```
-
-The demo can then be run by executing:
-
-```
-mvn jetty:run
+mvn jetty:run -pl keyboard-shortcut-manager-flow-demo
 ```
 
 After server startup, you'll be able find the demo at [http://localhost:8080](http://localhost:8080)
