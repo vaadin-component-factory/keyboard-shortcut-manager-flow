@@ -45,51 +45,86 @@ export class KeyboardShortcutManagerFlow extends LitElement {
     return parsedHandler;
   }
 
+  /**
+   * Add event listeners for Actions.
+   */
   private addActionListeners() {
     this.shortcuts?.forEach(shortcut => {
-      if (shortcut.scope) {
-        const scope = shortcut.scope as TargetElement;
-        if (scope) {
-          scope.addEventListener(`${shortcut.handler}`, () => {
-            const scope = shortcut.scope === window ? document : (shortcut.scope as HTMLElement);
-            const handler = this.parseHandler(shortcut.handler as string);
-            switch (handler) {
-              case Actions.helpDialog:
-                this.ksm?.toggleHelpDialog();
-                break;
-              case Actions.focusNextInvalidField:
-                KeyboardShortcutUtils.focusNextInvalidField(scope);
-                break;
-              case Actions.focusPreviousInvalidField:
-                KeyboardShortcutUtils.focusPreviousInvalidField(scope);
-                break;
-              case Actions.clearAllFields:
-                KeyboardShortcutManagerFlow.clearAllFields(scope);
-                break;
-              case Actions.clickElement: {
-                const targetId = shortcut.handler.toString().replace(Actions.clickElement, '');
-                KeyboardShortcutManagerFlow.clickElement(targetId);
-                break;
-              }
-              case Actions.focusElement: {
-                const targetId = shortcut.handler.toString().replace(Actions.focusElement, '');
-                KeyboardShortcutManagerFlow.focusElement(targetId);
-                break;
-              }
-              case Actions.focusNextElement: {
-                const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '');
-                KeyboardShortcutManagerFlow.focusNextElement(selector);
-                break;
-              }
-              case Actions.focusPreviousElement: {
-                const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '');
-                KeyboardShortcutManagerFlow.focusPreviousElement(selector);
-                break;
-              }
-            }
-          });
-        } else {
-          console.warn('Scope element not found.');
+      const scope = (shortcut.scope ?? window) as TargetElement;
+      scope.addEventListener(`${shortcut.handler}`, () => {
+        const scope = shortcut.scope === window ? document : (shortcut.scope as HTMLElement);
+        const handler = this.parseHandler(shortcut.handler as string);
+        switch (handler) {
+          case Actions.helpDialog:
+            this.ksm?.toggleHelpDialog();
+            break;
+          case Actions.focusNextInvalidField:
+            KeyboardShortcutUtils.focusNextInvalidField(scope);
+            break;
+          case Actions.focusPreviousInvalidField:
+            KeyboardShortcutUtils.focusPreviousInvalidField(scope);
+            break;
+          case Actions.clearAllFields:
+            KeyboardShortcutManagerFlow.clearAllFields(scope);
+            break;
+          case Actions.clickElement: {
+            const targetId = shortcut.handler.toString().replace(Actions.clickElement, '');
+            KeyboardShortcutManagerFlow.clickElement(targetId);
+            break;
+          }
+          case Actions.focusElement: {
+            const targetId = shortcut.handler.toString().replace(Actions.focusElement, '');
+            KeyboardShortcutManagerFlow.focusElement(targetId);
+            break;
+          }
+          case Actions.focusNextElement: {
+            const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '');
+            KeyboardShortcutManagerFlow.focusNextElement(selector);
+            break;
+          }
+          case Actions.focusPreviousElement: {
+            const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '');
+            KeyboardShortcutManagerFlow.focusPreviousElement(selector);
+            break;
+          }
+        }
+      });
+      this.initActionElements(shortcut);
+    });
+  }
+
+  /**
+   * Make elements used in Actions focusable.
+   */
+  private initActionElements(shortcut: KeyboardShortcut) {
+    requestAnimationFrame(() => {
+      const handler = this.parseHandler(shortcut.handler as string);
+      if (handler.includes('element')) {
+        switch (handler) {
+          case Actions.clickElement: {
+            const targetId = shortcut.handler.toString().replace(Actions.clickElement, '');
+            const element = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
+            if (element) KeyboardShortcutManagerFlow.setFocusable(element);
+            break;
+          }
+          case Actions.focusElement: {
+            const targetId = shortcut.handler.toString().replace(Actions.focusElement, '');
+            const element = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
+            if (element) KeyboardShortcutManagerFlow.setFocusable(element);
+            break;
+          }
+          case Actions.focusNextElement: {
+            const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '');
+            const elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
+            elements.forEach(element => KeyboardShortcutManagerFlow.setFocusable(element));
+            break;
+          }
+          case Actions.focusPreviousElement: {
+            const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '');
+            const elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
+            elements.forEach(element => KeyboardShortcutManagerFlow.setFocusable(element));
+            break;
+          }
         }
       }
     });
