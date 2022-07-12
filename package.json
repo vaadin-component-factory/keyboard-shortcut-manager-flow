@@ -2,6 +2,6 @@
   "scripts": {
     "start": "mvn jetty:run -pl keyboard-shortcut-manager-flow-demo",
     "build": "mvn clean install -P directory -pl keyboard-shortcut-manager-flow",
-    "version": "mvn versions:set"
+    "version": "mvn versions:set -pl keyboard-shortcut-manager-flow && mvn versions:set"
   }
 }
