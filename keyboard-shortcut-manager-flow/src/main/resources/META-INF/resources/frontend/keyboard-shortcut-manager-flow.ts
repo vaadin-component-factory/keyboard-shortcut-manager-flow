@@ -184,7 +184,8 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   private static clearAllFields(scope: Document | HTMLElement = document) {
     KeyboardShortcutUtils.getVaadinInputFields(scope).forEach((el: any) => {
       el.value = '';
-      el.invalid = !el.validate();
+      if (el.validate) el.invalid = !el.validate();
+      else if (el.checkValidity) el.invalid = !el.checkValidity();
     });
   }
 

@@ -31,6 +31,15 @@ public class KeyboardShortcut {
     private String keyBinding;
 
     /**
+     * Platform Independent Modifier.
+     * <ul>
+     * <li>Mac = <code>Meta</code> (⌘)</li>
+     * <li>Windows/Linux = <code>Control</code></li>
+     * </ul>
+     */
+    public static Key PI_MOD = Key.of("MOD");
+
+    /**
      * @param selector   Id/selector for focus element actions.
      * @param scope      String id of scope element. Default scope is <b>window</b>.
      *                   eg. "element-id".
