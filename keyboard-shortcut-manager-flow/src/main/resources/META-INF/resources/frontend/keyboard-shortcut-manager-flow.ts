@@ -49,9 +49,9 @@ export class KeyboardShortcutManagerFlow extends LitElement {
    * Add event listeners for Actions.
    */
   private addActionListeners() {
-    this.shortcuts?.forEach(shortcut => {
-      const scope = (shortcut.scope ?? window) as TargetElement;
-      scope.addEventListener(`${shortcut.handler}`, () => {
+    this.ksm?.shortcuts?.forEach(shortcut => {
+      let scope = (shortcut.scope || window) as TargetElement;
+      scope?.addEventListener(`${shortcut.handler}`, () => {
         const scope = shortcut.scope === window ? document : (shortcut.scope as HTMLElement);
         const handler = this.parseHandler(shortcut.handler as string);
         switch (handler) {
@@ -98,33 +98,33 @@ export class KeyboardShortcutManagerFlow extends LitElement {
    */
   private initActionElements(shortcut: KeyboardShortcut) {
     requestAnimationFrame(() => {
+      let elements: HTMLElement | HTMLElement[] | null = [];
       const handler = this.parseHandler(shortcut.handler as string);
       if (handler.includes('element')) {
         switch (handler) {
           case Actions.clickElement: {
             const targetId = shortcut.handler.toString().replace(Actions.clickElement, '');
-            const element = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
-            if (element) KeyboardShortcutManagerFlow.setFocusable(element);
+            elements = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
             break;
           }
           case Actions.focusElement: {
             const targetId = shortcut.handler.toString().replace(Actions.focusElement, '');
-            const element = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
-            if (element) KeyboardShortcutManagerFlow.setFocusable(element);
+            elements = KeyboardShortcutUtils.querySelectorDeep(`#${targetId}`);
             break;
           }
           case Actions.focusNextElement: {
             const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '');
-            const elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
-            elements.forEach(element => KeyboardShortcutManagerFlow.setFocusable(element));
+            elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
             break;
           }
           case Actions.focusPreviousElement: {
             const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '');
-            const elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
-            elements.forEach(element => KeyboardShortcutManagerFlow.setFocusable(element));
+            elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
             break;
           }
+        }
+        if (elements) {
+          KeyboardShortcutUtils.setFocusable(elements);
         }
       }
     });
@@ -155,7 +155,6 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   private static focusNextElement(groupSelector: string, previous = false) {
     const focused = KeyboardShortcutUtils.getActiveElement();
     const groupElements = KeyboardShortcutUtils.querySelectorAllDeep(groupSelector) as HTMLElement[];
-    groupElements.forEach(element => KeyboardShortcutManagerFlow.setFocusable(element));
     if (groupElements.length) {
       const currentGroup = groupElements.filter(element => element.contains(focused))[0];
       let firstInputField: HTMLElement;
@@ -187,12 +186,6 @@ export class KeyboardShortcutManagerFlow extends LitElement {
       if (el.validate) el.invalid = !el.validate();
       else if (el.checkValidity) el.invalid = !el.checkValidity();
     });
-  }
-
-  private static setFocusable(element: HTMLElement) {
-    if (element.tabIndex < 0 && !element.getAttribute('tabindex')) {
-      element.setAttribute('tabindex', '-1');
-    }
   }
 
   createRenderRoot() {

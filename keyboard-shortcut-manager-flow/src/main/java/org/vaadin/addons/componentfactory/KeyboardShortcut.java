@@ -37,7 +37,7 @@ public class KeyboardShortcut {
      * <li>Windows/Linux = <code>Control</code></li>
      * </ul>
      */
-    public static Key PI_MOD = Key.of("MOD");
+    public static Key MOD = Key.of("MOD");
 
     /**
      * @param selector   Id/selector for focus element actions.
