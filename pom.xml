@@ -3,7 +3,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow-root</artifactId>
-    <version>23.1.4</version>
+    <version>23.1.5</version>
     <packaging>pom</packaging>
     <modules>
         <module>keyboard-shortcut-manager-flow</module>
