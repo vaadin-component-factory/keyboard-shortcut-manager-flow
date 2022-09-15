@@ -40,9 +40,18 @@ public class KeyboardShortcut {
     public static Key MOD = Key.of("MOD");
 
     /**
-     * @param selector   Id/selector for focus element actions.
-     * @param scope      String id of scope element. Default scope is <b>window</b>.
-     *                   eg. "element-id".
+     * @param selector   Selector for focus element actions.
+     *                   <ul>
+     *                   <li><b>Example:</b>
+     *                   <code>#element-id</code>,
+     *                   <code>.group-selector</code>,
+     *                   <code>element-tag[attribute="value"]</code></li>
+     *                   </ul>
+     * @param scope      Selector of scope element.
+     *                   <ul>
+     *                   <li><b>Default:</b> <code>window</code></li>
+     *                   <li><b>Example:</b> <code>#element-id</code></li>
+     *                   </ul>
      * @param handler    Action to be used in this shortcut.
      * @param keyBinding Key binding descriptions.
      */
@@ -54,8 +63,11 @@ public class KeyboardShortcut {
 
     /**
      * @param description Description of the shortcut.
-     * @param scope       String id of scope element. Default scope is
-     *                    <b>window</b>. eg. "element-id".
+     * @param scope       Selector of scope element.
+     *                    <ul>
+     *                    <li><b>Default:</b> <code>window</code></li>
+     *                    <li><b>Example:</b> <code>#element-id</code></li>
+     *                    </ul>
      * @param handler     String name of custom event dispatched by the keyboard
      *                    shortcut.
      * @param keyBinding  Key binding descriptions.
@@ -66,8 +78,11 @@ public class KeyboardShortcut {
     }
 
     /**
-     * @param scope      String id of scope element. Default scope is
-     *                   <b>window</b>. eg. "element-id".
+     * @param scope      Selector of scope element.
+     *                   <ul>
+     *                   <li><b>Default:</b> <code>window</code></li>
+     *                   <li><b>Example:</b> <code>#element-id</code></li>
+     *                   </ul>
      * @param handler    String name of custom event dispatched by the keyboard
      *                   shortcut.
      * @param keyBinding Key binding descriptions.
@@ -78,8 +93,11 @@ public class KeyboardShortcut {
     }
 
     /**
-     * @param scope      String id of scope element. Default scope is
-     *                   <b>window</b>. eg. "element-id".
+     * @param scope      Selector of scope element.
+     *                   <ul>
+     *                   <li><b>Default:</b> <code>window</code></li>
+     *                   <li><b>Example:</b> <code>#element-id</code></li>
+     *                   </ul>
      * @param handler    Action to be used in this shortcut.
      * @param keyBinding Key binding descriptions.
      */
@@ -184,13 +202,37 @@ public class KeyboardShortcut {
     }
 
     public enum Actions {
+        /**
+         * Open or close the keyboard shortcut help dialog.
+         */
         helpDialog("help-dialog"),
+        /**
+         * Focus next invalid input field.
+         */
         focusNextInvalidField("focus-next-invalid-field"),
+        /**
+         * Focus previous invalid input field.
+         */
         focusPreviousInvalidField("focus-previous-invalid-field"),
+        /**
+         * Clear all input fields.
+         */
         clearAllFields("clear-all-fields"),
+        /**
+         * Focus and click the element with the specified selector.
+         */
         clickElement("click-element"),
+        /**
+         * Focus the element with the specified selector.
+         */
         focusElement("focus-element"),
+        /**
+         * Finds the next focusable element within the specified group selector.
+         */
         focusNextElement("focus-next-element"),
+        /**
+         * Finds the previous focusable element within the specified group selector.
+         */
         focusPreviousElement("focus-previous-element");
 
         private final String evt;

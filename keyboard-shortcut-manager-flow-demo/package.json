@@ -8,7 +8,7 @@
     "@polymer/iron-meta": "3.0.1",
     "@polymer/iron-resizable-behavior": "3.0.1",
     "@polymer/polymer": "3.4.1",
-    "@vaadin-component-factory/keyboard-shortcut-manager": "23.1.7",
+    "@vaadin-component-factory/keyboard-shortcut-manager": "23.1.12",
     "@vaadin/accordion": "23.1.0",
     "@vaadin/app-layout": "23.1.0",
     "@vaadin/avatar": "23.1.0",
@@ -136,7 +136,7 @@
     "loader-utils": "2.0.0",
     "typescript": "4.5.3",
     "webpack": "4.46.0",
-    "webpack-cli": "4.9.2",
+    "webpack-cli": "4.10.0",
     "webpack-dev-server": "4.8.1",
     "webpack-merge": "4.2.2",
     "workbox-core": "6.5.0",
@@ -151,7 +151,7 @@
       "@polymer/iron-meta": "3.0.1",
       "@polymer/iron-resizable-behavior": "3.0.1",
       "@polymer/polymer": "3.4.1",
-      "@vaadin-component-factory/keyboard-shortcut-manager": "23.1.7",
+      "@vaadin-component-factory/keyboard-shortcut-manager": "23.1.12",
       "@vaadin/accordion": "23.1.0",
       "@vaadin/app-layout": "23.1.0",
       "@vaadin/avatar": "23.1.0",
@@ -285,7 +285,7 @@
       "workbox-precaching": "6.5.0",
       "workbox-webpack-plugin": "6.5.0"
     },
-    "hash": "8f9bd3d2891f4e87ac7664a204741d660df4de93c007e19194c43fc8b1cb5e8f"
+    "hash": "3f9231bf774567c72f1945054c52d3c12498fa28a77b3664d3ef0206ecd8bb8b"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -321,6 +321,7 @@
     "@polymer/iron-resizable-behavior": "$@polymer/iron-resizable-behavior",
     "@vaadin/item": "$@vaadin/item",
     "@vaadin/list-box": "$@vaadin/list-box",
+    "@vaadin/lit-renderer": "$@vaadin/lit-renderer",
     "@vaadin/login": "$@vaadin/login",
     "@vaadin/menu-bar": "$@vaadin/menu-bar",
     "@vaadin/message-input": "$@vaadin/message-input",
@@ -403,7 +404,6 @@
     "@polymer/polymer": "$@polymer/polymer",
     "chokidar": "$chokidar",
     "@vaadin-component-factory/keyboard-shortcut-manager": "$@vaadin-component-factory/keyboard-shortcut-manager",
-    "date-fns": "$date-fns",
-    "@vaadin/lit-renderer": "$@vaadin/lit-renderer"
+    "date-fns": "$date-fns"
   }
 }

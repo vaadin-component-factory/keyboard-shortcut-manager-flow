@@ -1,10 +1,13 @@
 package org.vaadin.addons.componentfactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.notification.Notification;
@@ -36,7 +39,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
         for (int i = 1; i <= personCount; i++) {
             TextField name = new TextField("name");
             TextField address = new TextField("address");
-            VerticalLayout personContainer = new VerticalLayout(new H6("Person " + i), name, address);
+            VerticalLayout personContainer = new VerticalLayout(new H6("Person " + i));
             personContainer.setId("person-" + i);
             personContainer.addClassName("person");
             personContainer.setMargin(false);
@@ -57,6 +60,25 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
             binder.forField(address).asRequired(new StringLengthValidator("Must be at least 3 Characters long", 3, 10))
                     .bind(Person::getAddress, Person::setAddress);
             binder.validate();
+
+            personContainer.add(name);
+            personContainer.add(address);
+
+            if (i == personCount - 1) {
+                List<Person> people = Arrays.asList(
+                        new Person("Nicolaus Copernicus", "123 Street Rd."),
+                        new Person("Galileo Galilei", "456 Highway Ave."),
+                        new Person("Johannes Kepler", "789 Road St."));
+                Grid<Person> grid = new Grid<>();
+                grid.setItems(people);
+                grid.addColumn(Person::getName).setHeader("Name");
+                grid.addColumn(Person::getAddress).setHeader("Address");
+                grid.setAllRowsVisible(true);
+                grid.getStyle()
+                        .set("margin-top", "var(--lumo-space-m)")
+                        .set("max-width", "400px");
+                personContainer.add(grid);
+            }
 
             verticalLayout.add(personContainer);
         }
@@ -80,11 +102,13 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
                 new KeyboardShortcut("", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8),
                 new KeyboardShortcut("", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT,
                         Key.F8),
-                new KeyboardShortcut("person-1", KeyboardShortcut.Actions.clearAllFields, KeyboardShortcut.MOD,
+                new KeyboardShortcut("#person-1", KeyboardShortcut.Actions.clearAllFields, KeyboardShortcut.MOD,
                         Key.KEY_K),
-                new KeyboardShortcut("submit", "", KeyboardShortcut.Actions.clickElement,
+                new KeyboardShortcut("#submit", "", KeyboardShortcut.Actions.clickElement,
                         KeyboardShortcut.MOD, Key.KEY_B),
-                new KeyboardShortcut("address-2", "person-2", KeyboardShortcut.Actions.focusElement,
+                new KeyboardShortcut("#submit", "", KeyboardShortcut.Actions.clickElement,
+                        Key.CONTROL, Key.SHIFT, Key.KEY_B),
+                new KeyboardShortcut("#address-2", "#person-2", KeyboardShortcut.Actions.focusElement,
                         KeyboardShortcut.MOD, Key.KEY_F),
                 new KeyboardShortcut(".person", "", KeyboardShortcut.Actions.focusNextElement,
                         Key.CONTROL, Key.SHIFT, Key.ARROW_RIGHT),
@@ -99,6 +123,11 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
     private static class Person {
         private String name;
         private String address;
+
+        public Person(String name, String address) {
+            setName(name);
+            setAddress(address);
+        }
 
         public String getName() {
             return name;
