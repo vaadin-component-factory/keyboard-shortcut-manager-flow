@@ -9,9 +9,9 @@ package org.vaadin.addons.componentfactory;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,6 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.littemplate.LitTemplate;
-
 import elemental.json.Json;
 import elemental.json.JsonArray;
 
@@ -71,7 +70,18 @@ public class KeyboardShortcutManager extends LitTemplate {
 
     public void subscribe() {
         getElement().setPropertyJson("shortcuts", listToJson(keyboardShortcuts));
-        component.getUI().get().add(this);
+        if (component == null) {
+            throw new IllegalStateException("Trying to subscribe KSM while component is null");
+        }
+        // Add KSM to the UI on attach
+        component.addAttachListener(e -> {
+            e.getUI().add(this);
+        });
+        // ... and remove on detach
+        component.addDetachListener(e -> {
+            e.getUI().remove(this);
+        });
+
     }
 
     public KeyboardShortcutManager addShortcut(KeyboardShortcut... keyboardShortcuts) {

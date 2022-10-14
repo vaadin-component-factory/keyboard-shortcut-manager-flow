@@ -403,7 +403,7 @@
     "lit": "$lit",
     "@polymer/polymer": "$@polymer/polymer",
     "chokidar": "$chokidar",
-    "@vaadin-component-factory/keyboard-shortcut-manager": "$@vaadin-component-factory/keyboard-shortcut-manager",
-    "date-fns": "$date-fns"
+    "date-fns": "$date-fns",
+    "@vaadin-component-factory/keyboard-shortcut-manager": "$@vaadin-component-factory/keyboard-shortcut-manager"
   }
 }

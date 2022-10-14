@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
 @Route("")
 @CssImport(value = "demo-styles.css")
@@ -91,11 +92,19 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
 
         verticalLayout.add(button);
         verticalLayout.setSpacing(false);
+
+        verticalLayout.add(new RouterLink("Navigate to another view", TestNavigationView.class));
+
+        KeyboardShortcutManager keyboardShortcutManager = createKeyboardShortcutManager();
+        keyboardShortcutManager.subscribe();
     }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
+    }
+
+    private KeyboardShortcutManager createKeyboardShortcutManager() {
         KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
         KeyboardShortcut[] shortcuts = new KeyboardShortcut[] {
                 new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.CONTROL, Key.SHIFT, Key.SLASH),
@@ -117,7 +126,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
         };
 
         keyboardShortcutManager.addShortcut(shortcuts);
-        keyboardShortcutManager.subscribe();
+        return keyboardShortcutManager;
     }
 
     private static class Person {
