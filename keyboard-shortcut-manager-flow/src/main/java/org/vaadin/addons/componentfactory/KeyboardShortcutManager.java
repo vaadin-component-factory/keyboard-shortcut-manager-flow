@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.littemplate.LitTemplate;
@@ -73,6 +74,11 @@ public class KeyboardShortcutManager extends LitTemplate {
         if (component == null) {
             throw new IllegalStateException("Trying to subscribe KSM while component is null");
         }
+        // If the current UI is present, add KSM
+        if (UI.getCurrent() != null) {
+            UI.getCurrent().add(this);
+        }
+
         // Add KSM to the UI on attach
         component.addAttachListener(e -> {
             e.getUI().add(this);
@@ -81,7 +87,6 @@ public class KeyboardShortcutManager extends LitTemplate {
         component.addDetachListener(e -> {
             e.getUI().remove(this);
         });
-
     }
 
     public KeyboardShortcutManager addShortcut(KeyboardShortcut... keyboardShortcuts) {
