@@ -104,22 +104,22 @@ export class KeyboardShortcutManagerFlow extends LitElement {
       if (handler.includes('element')) {
         switch (handler) {
           case Actions.clickElement: {
-            const selector = shortcut.handler.toString().replace(Actions.clickElement, '');
+            const selector = shortcut.handler.toString().replace(Actions.clickElement, '').split('_')[0];
             elements = KeyboardShortcutUtils.querySelectorDeep(selector);
             break;
           }
           case Actions.focusElement: {
-            const selector = shortcut.handler.toString().replace(Actions.focusElement, '');
+            const selector = shortcut.handler.toString().replace(Actions.focusElement, '').split('_')[0];
             elements = KeyboardShortcutUtils.querySelectorDeep(selector);
             break;
           }
           case Actions.focusNextElement: {
-            const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '');
+            const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '').split('_')[0];
             elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
             break;
           }
           case Actions.focusPreviousElement: {
-            const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '');
+            const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '').split('_')[0];
             elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
             break;
           }
@@ -205,8 +205,10 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   }
 
   private static clearAllFields(scope: Document | HTMLElement = document) {
-    KeyboardShortcutUtils.getVaadinInputFields(scope).forEach((el: any) => {
-      el.value = '';
+    const allFields = [...KeyboardShortcutUtils.getInputFields(scope), ...KeyboardShortcutUtils.getVaadinInputFields(scope)];
+    allFields.forEach((el: any) => {
+      const isButtonInput = el instanceof HTMLInputElement && el.type === 'button';
+      if (el.value && !isButtonInput) el.value = '';
       if (el.validate) el.invalid = !el.validate();
       else if (el.checkValidity) el.invalid = !el.checkValidity();
     });

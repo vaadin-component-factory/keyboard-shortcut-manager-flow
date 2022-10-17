@@ -8,7 +8,7 @@
     "@polymer/iron-meta": "3.0.1",
     "@polymer/iron-resizable-behavior": "3.0.1",
     "@polymer/polymer": "3.4.1",
-    "@vaadin-component-factory/keyboard-shortcut-manager": "23.1.12",
+    "@vaadin-component-factory/keyboard-shortcut-manager": "23.2.0",
     "@vaadin/accordion": "23.1.0",
     "@vaadin/app-layout": "23.1.0",
     "@vaadin/avatar": "23.1.0",
@@ -151,7 +151,7 @@
       "@polymer/iron-meta": "3.0.1",
       "@polymer/iron-resizable-behavior": "3.0.1",
       "@polymer/polymer": "3.4.1",
-      "@vaadin-component-factory/keyboard-shortcut-manager": "23.1.12",
+      "@vaadin-component-factory/keyboard-shortcut-manager": "23.2.0",
       "@vaadin/accordion": "23.1.0",
       "@vaadin/app-layout": "23.1.0",
       "@vaadin/avatar": "23.1.0",
@@ -285,7 +285,7 @@
       "workbox-precaching": "6.5.0",
       "workbox-webpack-plugin": "6.5.0"
     },
-    "hash": "3f9231bf774567c72f1945054c52d3c12498fa28a77b3664d3ef0206ecd8bb8b"
+    "hash": "ba861deb8cceff7a3938507e1d0cbff57d17349ec821a8a4a621076fb8d56535"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
