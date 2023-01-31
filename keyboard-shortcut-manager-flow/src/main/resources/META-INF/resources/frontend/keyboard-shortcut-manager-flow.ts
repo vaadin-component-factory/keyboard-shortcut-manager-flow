@@ -179,23 +179,11 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   }
 
   private static getSortedFocusableChildren(scope: HTMLElement) {
-    const focusableElements = KeyboardShortcutUtils.getFocusableElements(scope);
-    const childern = Array.from(scope.children) as HTMLElement[];
-    const getChildrenIndex = (a: HTMLElement) => {
-      let indexA = childern.indexOf(a);
-      if (indexA < 0) {
-        if (a.parentElement) indexA = childern.indexOf(a.parentElement);
-        if (indexA < 0 && a.getRootNode() !== document) {
-          const host = (a.getRootNode() as ShadowRoot).host as HTMLElement;
-          indexA = childern.indexOf(host);
-        }
-      }
-      return indexA;
-    };
+    let focusableElements = KeyboardShortcutUtils.getFocusableElements(scope);
+    focusableElements = focusableElements.filter(el => KeyboardShortcutUtils.isFocusable(el));
     focusableElements.sort((a, b) => {
-      const indexA = getChildrenIndex(a);
-      const indexB = getChildrenIndex(b);
-      return indexA - indexB;
+      let order = a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_PRECEDING;
+      return order ? 1 : -1;
     });
     return focusableElements;
   }

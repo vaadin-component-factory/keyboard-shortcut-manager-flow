@@ -3,6 +3,8 @@ package org.vaadin.addons.componentfactory;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import com.vaadin.componentfactory.lookupfield.LookupField;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -14,6 +16,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
@@ -41,6 +44,11 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
             TextField name = new TextField("name");
             TextField address = new TextField("address");
             VerticalLayout personContainer = new VerticalLayout(new H6("Person " + i));
+            List<Person> people = Arrays.asList(
+                    new Person("Nicolaus Copernicus", "123 Street Rd."),
+                    new Person("Galileo Galilei", "456 Highway Ave."),
+                    new Person("Johannes Kepler", "789 Road St."));
+
             personContainer.setId("person-" + i);
             personContainer.addClassName("person");
             personContainer.setMargin(false);
@@ -62,14 +70,22 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
                     .bind(Person::getAddress, Person::setAddress);
             binder.validate();
 
+            if (i == 1) {
+                name.setEnabled(false);
+            }
+
+            if (i == personCount) {
+                LookupField<Person> lookupField = new LookupField<>(Person.class);
+                lookupField.setDataProvider(DataProvider.ofCollection(people));
+                lookupField.setHeader("Person Search");
+                lookupField.setGridWidth("900px");
+                personContainer.add(lookupField);
+            }
+
             personContainer.add(name);
             personContainer.add(address);
 
             if (i == personCount - 1) {
-                List<Person> people = Arrays.asList(
-                        new Person("Nicolaus Copernicus", "123 Street Rd."),
-                        new Person("Galileo Galilei", "456 Highway Ave."),
-                        new Person("Johannes Kepler", "789 Road St."));
                 Grid<Person> grid = new Grid<>();
                 grid.setItems(people);
                 grid.addColumn(Person::getName).setHeader("Name");
@@ -129,7 +145,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
         return keyboardShortcutManager;
     }
 
-    private static class Person {
+    public static class Person {
         private String name;
         private String address;
 
