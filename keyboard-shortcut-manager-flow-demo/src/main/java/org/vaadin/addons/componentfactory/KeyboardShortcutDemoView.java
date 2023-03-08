@@ -123,7 +123,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
     private KeyboardShortcutManager createKeyboardShortcutManager() {
         KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
         KeyboardShortcut[] shortcuts = new KeyboardShortcut[] {
-                new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.CONTROL, Key.SHIFT, Key.SLASH),
+                new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.ALT, Key.F1),
                 new KeyboardShortcut("", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8),
                 new KeyboardShortcut("", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT,
                         Key.F8),

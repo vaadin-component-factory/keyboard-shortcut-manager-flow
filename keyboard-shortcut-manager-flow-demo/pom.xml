@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow-demo</artifactId>
-    <version>23.3.1</version>
+    <version>23.3.7</version>
 
     <name>Keyboard Shortcut Manager Demo</name>
     <packaging>war</packaging>
@@ -18,7 +18,7 @@
     </organization>
 
     <properties>
-        <vaadin.version>23.3.4</vaadin.version>
+        <vaadin.version>23.3.6</vaadin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

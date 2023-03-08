@@ -49,7 +49,7 @@ export class KeyboardShortcutManagerFlow extends LitElement {
    * Add event listeners for Actions.
    */
   private addActionListeners() {
-    this.ksm?.shortcuts?.forEach(shortcut => {
+    this.ksm?.shortcuts?.forEach((shortcut: KeyboardShortcut) => {
       let scope = (shortcut.scope || window) as TargetElement;
       scope?.addEventListener(`${shortcut.handler}`, () => {
         const scope = shortcut.scope === window ? document : (shortcut.scope as HTMLElement);
@@ -90,44 +90,6 @@ export class KeyboardShortcutManagerFlow extends LitElement {
           }
         }
       });
-      this.initActionElements(shortcut);
-    });
-  }
-
-  /**
-   * Make elements used in Actions focusable.
-   */
-  private initActionElements(shortcut: KeyboardShortcut) {
-    requestAnimationFrame(() => {
-      let elements: HTMLElement | HTMLElement[] | null = [];
-      const handler = this.parseHandler(shortcut.handler as string);
-      if (handler.includes('element')) {
-        switch (handler) {
-          case Actions.clickElement: {
-            const selector = shortcut.handler.toString().replace(Actions.clickElement, '').split('_')[0];
-            elements = KeyboardShortcutUtils.querySelectorDeep(selector);
-            break;
-          }
-          case Actions.focusElement: {
-            const selector = shortcut.handler.toString().replace(Actions.focusElement, '').split('_')[0];
-            elements = KeyboardShortcutUtils.querySelectorDeep(selector);
-            break;
-          }
-          case Actions.focusNextElement: {
-            const selector = shortcut.handler.toString().replace(Actions.focusNextElement, '').split('_')[0];
-            elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
-            break;
-          }
-          case Actions.focusPreviousElement: {
-            const selector = shortcut.handler.toString().replace(Actions.focusPreviousElement, '').split('_')[0];
-            elements = KeyboardShortcutUtils.querySelectorAllDeep(selector);
-            break;
-          }
-        }
-        if (elements) {
-          KeyboardShortcutUtils.setFocusable(elements);
-        }
-      }
     });
   }
 
@@ -143,11 +105,55 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   private static focusElement(selector: string, click = false) {
     const element = KeyboardShortcutUtils.querySelectorDeep(selector);
     if (element) {
+      let tabIndexAdded = false;
+      if (this.shouldReceiveTabIndex(element)) {
+        this.addTabIndex(element);
+        tabIndexAdded = true;
+      }
       element.focus();
-      if (click) element.click();
+      if (click) {
+        element.click();
+      }
+      if (tabIndexAdded) {
+        this.removeTabIndex(element);
+      }
     } else {
       console.warn(`Element with id "${selector}" not found.`);
     }
+  }
+
+  private static shouldReceiveTabIndex(target: HTMLElement | null) {
+    if (!target || !target.parentNode) {
+          return false;
+    }
+    const focusables = Array.from(
+            target.parentNode.querySelectorAll(
+                '[tabindex], button, input, select, textarea, object, iframe, a[href], area[href]',
+            ),
+        ).filter((element) => {
+          const part = element.getAttribute('part');
+          return !(part && part.includes('body-cell'));
+        });
+    const isNonFocusableElement = !focusables.includes(target);
+    return (isNonFocusableElement
+            && !(target as any).disabled
+            && !(target.offsetParent == null)
+            && getComputedStyle(target).visibility !== 'hidden'
+    );
+  }
+
+  private static addTabIndex(target: HTMLElement | null) {
+    if (target == null) {
+      return;
+    }
+    target.setAttribute('tabindex', '0');
+  }
+
+  private static removeTabIndex(target: HTMLElement | null) {
+    if (target == null) {
+      return;
+    }
+    target.removeAttribute('tabindex');
   }
 
   private static clickElement(selector: string) {
@@ -172,7 +178,16 @@ export class KeyboardShortcutManagerFlow extends LitElement {
       }
       const focusableElements = KeyboardShortcutManagerFlow.getSortedFocusableChildren(nextGroup);
       const firstInputField = focusableElements[0];
+
+      let tabIndexAdded = false;
+      if (this.shouldReceiveTabIndex(firstInputField)) {
+        this.addTabIndex(firstInputField);
+        tabIndexAdded = true;
+      }
       firstInputField.focus();
+      if (tabIndexAdded) {
+        this.removeTabIndex(firstInputField);
+      }
     } else {
       console.warn(`Elements with selector "${groupSelector}" not found.`);
     }
