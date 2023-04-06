@@ -13,12 +13,19 @@ export enum Actions {
   focusPreviousElement = 'focus-previous-element'
 }
 
+interface EventRegistration {
+  handler: any;
+  listener: () => void;
+}
+
 @customElement('keyboard-shortcut-manager-flow')
 export class KeyboardShortcutManagerFlow extends LitElement {
   @property({ type: Boolean }) helpDialog = true;
   @property({ type: Array }) shortcuts?: KeyboardShortcut[];
   private ksm?: KeyboardShortcutManager;
   private firstUpdate = false;
+
+  private listenersByScope = new Map<any, EventRegistration[]>();
 
   protected firstUpdated() {
     this.ksm = new KeyboardShortcutManager({ helpDialog: this.helpDialog });
@@ -49,15 +56,16 @@ export class KeyboardShortcutManagerFlow extends LitElement {
    * Add event listeners for Actions.
    */
   private addActionListeners() {
+    const that = this;
     this.ksm?.shortcuts?.forEach((shortcut: KeyboardShortcut) => {
       let scope = (shortcut.scope || window) as TargetElement;
-      scope?.addEventListener(`${shortcut.handler}`, () => {
+      let listener = function() {
         const scope = shortcut.scope === window ? document : (shortcut.scope as HTMLElement);
-        const handler = this.parseHandler(shortcut.handler as string);
+        const handler = that.parseHandler(shortcut.handler as string);
         const handlerNoIndex = `${shortcut.handler}`.split('_')[0];
         switch (handler) {
           case Actions.helpDialog:
-            this.ksm?.toggleHelpDialog();
+            that.ksm?.toggleHelpDialog();
             break;
           case Actions.focusNextInvalidField:
             KeyboardShortcutUtils.focusNextInvalidField(scope);
@@ -89,7 +97,26 @@ export class KeyboardShortcutManagerFlow extends LitElement {
             break;
           }
         }
-      });
+      }.bind(this);
+
+
+      scope?.addEventListener(`${shortcut.handler}`, listener);
+      if (scope) {
+        const pair: EventRegistration = {
+          handler: shortcut.handler,
+          listener: listener
+        };
+        if (this.listenersByScope.has(scope)) {
+          let listenerArray = this.listenersByScope.get(scope);
+          if (listenerArray == null) {
+            return;
+          }
+          listenerArray.push(pair);
+        } else {
+          let listenerArray = [pair];
+          this.listenersByScope.set(scope, listenerArray);
+        }
+      }
     });
   }
 
@@ -195,7 +222,7 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
   private static getSortedFocusableChildren(scope: HTMLElement) {
     let focusableElements = KeyboardShortcutUtils.getFocusableElements(scope);
-    focusableElements = focusableElements.filter(el => KeyboardShortcutUtils.isFocusable(el));
+    focusableElements = focusableElements.filter((el: any)=> KeyboardShortcutUtils.isFocusable(el));
     focusableElements.sort((a, b) => {
       let order = a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_PRECEDING;
       return order ? 1 : -1;
@@ -219,5 +246,19 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
   createRenderRoot() {
     return this;
+  }
+
+  onAttach() {
+    this.ksm?.subscribe();
+  }
+
+  onDetach() {
+    for (const [scope, listenersArray] of this.listenersByScope) {
+      for (var i: number = 0; i < listenersArray.length; i++) {
+        const pair: EventRegistration = listenersArray[i];
+        scope.removeEventListener(pair.handler as any, pair.listener);
+      }
+    }
+    this.ksm?.unsubscribe();
   }
 }

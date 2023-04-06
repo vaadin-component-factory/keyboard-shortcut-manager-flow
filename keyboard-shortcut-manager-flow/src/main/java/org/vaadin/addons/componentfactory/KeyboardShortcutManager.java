@@ -82,10 +82,11 @@ public class KeyboardShortcutManager extends LitTemplate {
         // Add KSM to the UI on attach
         component.addAttachListener(e -> {
             e.getUI().add(this);
+            getElement().callJsFunction("onAttach");
         });
         // ... and remove on detach
         component.addDetachListener(e -> {
-            e.getUI().remove(this);
+            getElement().callJsFunction("onDetach");
         });
     }
 

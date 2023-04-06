@@ -109,7 +109,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
         verticalLayout.add(button);
         verticalLayout.setSpacing(false);
 
-        verticalLayout.add(new RouterLink("Navigate to another view", TestNavigationView.class));
+        verticalLayout.add(new RouterLink("Navigate to another view", MenuBarView.class));
 
         KeyboardShortcutManager keyboardShortcutManager = createKeyboardShortcutManager();
         keyboardShortcutManager.subscribe();

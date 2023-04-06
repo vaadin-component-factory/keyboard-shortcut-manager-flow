@@ -8,8 +8,9 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.shared.Tooltip;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
-@Route("menubar")
+@Route(value="menubar")
 public class MenuBarView extends VerticalLayout {
 
     public MenuBarView() {
@@ -27,6 +28,7 @@ public class MenuBarView extends VerticalLayout {
         flexLayout.setFlexWrap(FlexLayout.FlexWrap.WRAP);
 
         add(menu);
+        add(new RouterLink("Navigate to demo view", KeyboardShortcutDemoView.class));
 
     }
 }
