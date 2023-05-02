@@ -151,21 +151,21 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
   private static shouldReceiveTabIndex(target: HTMLElement | null) {
     if (!target || !target.parentNode) {
-          return false;
+      return false;
     }
     const focusables = Array.from(
-            target.parentNode.querySelectorAll(
-                '[tabindex], button, input, select, textarea, object, iframe, a[href], area[href]',
-            ),
-        ).filter((element) => {
-          const part = element.getAttribute('part');
-          return !(part && part.includes('body-cell'));
-        });
+        target.parentNode.querySelectorAll(
+            '[tabindex], button, input, select, textarea, object, iframe, a[href], area[href]',
+        ),
+    ).filter((element) => {
+      const part = element.getAttribute('part');
+      return !(part && part.includes('body-cell'));
+    });
     const isNonFocusableElement = !focusables.includes(target);
     return (isNonFocusableElement
-            && !(target as any).disabled
-            && !(target.offsetParent == null)
-            && getComputedStyle(target).visibility !== 'hidden'
+        && !(target as any).disabled
+        && !(target.offsetParent == null)
+        && getComputedStyle(target).visibility !== 'hidden'
     );
   }
 
@@ -223,8 +223,16 @@ export class KeyboardShortcutManagerFlow extends LitElement {
   private static getSortedFocusableChildren(scope: HTMLElement) {
     let focusableElements = KeyboardShortcutUtils.getFocusableElements(scope);
     focusableElements = focusableElements.filter((el: any)=> KeyboardShortcutUtils.isFocusable(el));
+    let implementationSpecificNodes = focusableElements.filter( (el: any) => {
+      return document.body.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
+    } );
+    focusableElements = focusableElements.filter((el: any) => !implementationSpecificNodes.includes(el));
+    if (!focusableElements && implementationSpecificNodes) {
+      return implementationSpecificNodes;
+    }
     focusableElements.sort((a, b) => {
-      let order = a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_PRECEDING;
+      let compare = a.compareDocumentPosition(b);
+      let order = compare & Node.DOCUMENT_POSITION_PRECEDING;
       return order ? 1 : -1;
     });
     return focusableElements;

@@ -10,6 +10,7 @@ import com.vaadin.flow.router.RouterLink;
 public class TestNavigationView extends VerticalLayout {
 
     public TestNavigationView() {
+
         add(new Span("Nothing to see here"), new RouterLink("Back to demo view", KeyboardShortcutDemoView.class));
     }
 }
