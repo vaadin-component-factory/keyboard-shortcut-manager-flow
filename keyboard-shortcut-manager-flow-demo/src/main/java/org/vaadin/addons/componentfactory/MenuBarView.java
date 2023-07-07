@@ -17,6 +17,7 @@ import com.vaadin.flow.component.shared.Tooltip;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
@@ -40,13 +41,36 @@ public class MenuBarView extends VerticalLayout {
                 new KeyboardShortcut(".focus-section","", KeyboardShortcut.Actions.focusNextElement, Key.CONTROL, Key.SHIFT, Key.ARROW_RIGHT)
         );
         keyboardShortcutManager.subscribe();
-        FlexLayout flexLayout = new FlexLayout();
-        flexLayout.setFlexWrap(FlexLayout.FlexWrap.WRAP);
+
+        Upload upload = new Upload();
+        KeyboardShortcutManager.addSectionPriorityHint(upload);
+        add(createSection(upload));
+
+        Upload upload2 = new Upload();
+        Button uploadButton = new Button("Upload 2");
+        upload2.setUploadButton(uploadButton);
+        KeyboardShortcutManager.addSectionPriorityHint(upload2);
+        add(createSection(upload2));
+
+
+        MenuBar menuBar2 = new MenuBar();
+        KeyboardShortcutManager.addSectionPriorityHint(menuBar2);
+        menuBar2.addItem("Menubar 2");
+        add(createSection(menuBar2));
+
+
         TextField textField = new TextField("Text field");
         add(createSection(textField));
 
+        MessageInput messageInput = new MessageInput();
+
+        KeyboardShortcutManager.addSectionPriorityHint(messageInput);
+        add(createSection(messageInput));
+
         EmailField emailField = new EmailField("Email field");
         add(createSection(emailField));
+
+
 
         NumberField numberField = new NumberField("Number field");
         numberField.setEnabled(false);
@@ -66,6 +90,9 @@ public class MenuBarView extends VerticalLayout {
         ListBox<String> listBox = new ListBox<>();
         listBox.setItems("One", "Two", "Three");
         add(createSection(listBox));
+
+
+
 
 
         add(menu);

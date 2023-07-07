@@ -224,18 +224,38 @@ export class KeyboardShortcutManagerFlow extends LitElement {
     let focusableElements = KeyboardShortcutUtils.getFocusableElements(scope);
     focusableElements = focusableElements.filter((el: any)=> KeyboardShortcutUtils.isFocusable(el));
     let implementationSpecificNodes = focusableElements.filter( (el: any) => {
+      if (this.isPriority(el)) {
+        return false;
+      }
       return document.body.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
     } );
     focusableElements = focusableElements.filter((el: any) => !implementationSpecificNodes.includes(el));
     if (!focusableElements && implementationSpecificNodes) {
       return implementationSpecificNodes;
     }
-    focusableElements.sort((a, b) => {
+    focusableElements.sort((a: Node, b: Node) => {
+      let aPriority = this.isPriority(a);
+      let bPriority = this.isPriority(b);
+      if (aPriority && bPriority) {
+        return a.compareDocumentPosition(b) ? 1 : -1;
+      }
+      if (aPriority) {
+        return -1;
+      }
+      if (bPriority) {
+        return 1;
+      }
       let compare = a.compareDocumentPosition(b);
       let order = compare & Node.DOCUMENT_POSITION_PRECEDING;
       return order ? 1 : -1;
     });
     return focusableElements;
+  }
+
+  private static isPriority(el: any): boolean {
+    const theme = el.getAttribute("theme");
+    return theme && theme.includes("ksm-priority");
+
   }
 
   private static focusPreviousElement(groupSelector: string) {

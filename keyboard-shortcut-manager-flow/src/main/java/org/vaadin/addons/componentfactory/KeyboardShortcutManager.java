@@ -29,6 +29,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.littemplate.LitTemplate;
+import com.vaadin.flow.component.messages.MessageInput;
+import com.vaadin.flow.component.upload.Upload;
 import elemental.json.Json;
 import elemental.json.JsonArray;
 
@@ -50,6 +52,7 @@ public class KeyboardShortcutManager extends LitTemplate {
     private final Component component;
     private Boolean helpDialog = true;
     private List<KeyboardShortcut> keyboardShortcuts = new ArrayList<>();
+    public static final String KSM_SECTION_PRIORITY_HINT = "ksm-priority";
 
     /**
      * Creates a new KeyboardShortcutManager.
@@ -107,4 +110,22 @@ public class KeyboardShortcutManager extends LitTemplate {
             throw new RuntimeException("Error converting list to JSON", var2);
         }
     }
+
+    /**
+     * For use with the focusNextElement / focusPreviousElement actions: certain components aren't automatically
+     * recognized as the first in a section. Use this method to add a "hint" that the component in question
+     * should indeed be considered as the next or previous one.
+     * @param component
+     */
+    public static void addSectionPriorityHint(Component component) {
+        Objects.requireNonNull(component, "Keyboard shortcut manager section priority can't be set for a null component");
+        if (component instanceof Upload) {
+            component.getElement().executeJs("$0.shadowRoot.querySelector(\"[part='upload-button']\").setAttribute(\"theme\",\"ksm-priority\");", component.getElement());
+            return;
+        } else if (component instanceof MessageInput) {
+            component.getElement().executeJs("$0.shadowRoot.querySelector(\"[slot='textarea']\").setAttribute(\"theme\",\"ksm-priority\");", component.getElement());
+        }
+        component.getElement().getThemeList().add(KSM_SECTION_PRIORITY_HINT);
+    }
+
 }

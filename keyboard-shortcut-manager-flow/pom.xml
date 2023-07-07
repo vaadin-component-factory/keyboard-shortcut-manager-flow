@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow</artifactId>
-    <version>23.3.8</version>
+    <version>23.3.9</version>
     <packaging>jar</packaging>
 
     <name>VCF Keyboard Shortcut Manager Flow</name>
@@ -66,6 +66,7 @@
             <releases><enabled>false</enabled></releases>
         </pluginRepository>
     </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -104,6 +105,15 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.3.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
