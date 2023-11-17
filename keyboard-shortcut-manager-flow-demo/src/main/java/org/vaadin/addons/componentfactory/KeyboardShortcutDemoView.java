@@ -12,6 +12,8 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -39,8 +41,11 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
         verticalLayout.addClassName("shadow-s");
         verticalLayout.getStyle().set("background", "#FFFFFF");
         addAndExpand(verticalLayout);
-
+        verticalLayout.add(getNoInputsLayout());
         for (int i = 1; i <= personCount; i++) {
+            if (i == 2) {
+                verticalLayout.add(getNoInputsLayout());
+            }
             TextField name = new TextField("name");
             TextField address = new TextField("address");
             VerticalLayout personContainer = new VerticalLayout(new H6("Person " + i));
@@ -100,6 +105,8 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
             verticalLayout.add(personContainer);
         }
 
+
+        verticalLayout.add(getNoInputsLayout());
         Button button = new Button("Submit");
         button.setId("submit");
         button.addClickListener(e -> {
@@ -113,6 +120,13 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
 
         KeyboardShortcutManager keyboardShortcutManager = createKeyboardShortcutManager();
         keyboardShortcutManager.subscribe();
+    }
+
+    private static VerticalLayout getNoInputsLayout() {
+        VerticalLayout noInputsLayout = new VerticalLayout();
+        noInputsLayout.setClassName("person");
+        noInputsLayout.add(new Span("No focusable fields"), new Paragraph("Test an area without focusable items"));
+        return noInputsLayout;
     }
 
     @Override

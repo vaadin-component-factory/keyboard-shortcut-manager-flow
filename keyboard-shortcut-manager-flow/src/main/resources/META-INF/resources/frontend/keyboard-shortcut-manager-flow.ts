@@ -189,9 +189,9 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
   private static focusNextElement(groupSelector: string, previous = false) {
     const focused = document.activeElement;
-    const groupElements = KeyboardShortcutUtils.querySelectorAllDeep(groupSelector) as HTMLElement[];
-    if (groupElements.length) {
-      const currentGroup = groupElements.filter(element => element.contains(focused))[0];
+    let groupElements = KeyboardShortcutUtils.querySelectorAllDeep(groupSelector) as HTMLElement[];
+    const currentGroup = groupElements.filter(element => element.contains(focused))[0];
+    while (groupElements.length > 0) {
       let nextGroup: HTMLElement;
       if (currentGroup) {
         const last = groupElements.length - 1;
@@ -205,7 +205,11 @@ export class KeyboardShortcutManagerFlow extends LitElement {
       }
       const focusableElements = KeyboardShortcutManagerFlow.getSortedFocusableChildren(nextGroup);
       const firstInputField = focusableElements[0];
-
+      if (!firstInputField) {
+        // Didn't find a focusable element in the next group -> remove it from the set and try again
+        groupElements.splice(groupElements.indexOf(nextGroup), 1);
+        continue;
+      }
       let tabIndexAdded = false;
       if (this.shouldReceiveTabIndex(firstInputField)) {
         this.addTabIndex(firstInputField);
@@ -215,9 +219,12 @@ export class KeyboardShortcutManagerFlow extends LitElement {
       if (tabIndexAdded) {
         this.removeTabIndex(firstInputField);
       }
-    } else {
-      console.warn(`Elements with selector "${groupSelector}" not found.`);
+      break;
     }
+    if (groupElements.length == 0) {
+      console.warn(`Focusable element groups with selector "${groupSelector}" not found.`);
+    }
+
   }
 
   private static getSortedFocusableChildren(scope: HTMLElement) {
