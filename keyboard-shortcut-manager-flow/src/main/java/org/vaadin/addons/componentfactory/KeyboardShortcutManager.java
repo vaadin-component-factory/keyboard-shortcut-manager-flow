@@ -38,16 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A Designer generated component for the keyboard-shortcut-manager template.
- * <p>
- * Designer will add and remove fields with @Id mappings but
- * does not overwrite or otherwise change this file.
- */
 @Tag("keyboard-shortcut-manager-flow")
 @JsModule("./keyboard-shortcut-manager-flow.ts")
-@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "23.3.1")
-public class KeyboardShortcutManager extends LitTemplate {
+@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "24.0.1")
+public class KeyboardShortcutManager extends Component {
 
     private final Component component;
     private Boolean helpDialog = true;
@@ -120,10 +114,10 @@ public class KeyboardShortcutManager extends LitTemplate {
     public static void addSectionPriorityHint(Component component) {
         Objects.requireNonNull(component, "Keyboard shortcut manager section priority can't be set for a null component");
         if (component instanceof Upload) {
-            component.getElement().executeJs("$0.shadowRoot.querySelector(\"[part='upload-button']\").setAttribute(\"theme\",\"ksm-priority\");", component.getElement());
+            component.getElement().executeJs("$0.getElementsByTagName('vaadin-button')[0].setAttribute(\"theme\",\"ksm-priority\");", component.getElement());
             return;
         } else if (component instanceof MessageInput) {
-            component.getElement().executeJs("$0.shadowRoot.querySelector(\"[slot='textarea']\").setAttribute(\"theme\",\"ksm-priority\");", component.getElement());
+            component.getElement().executeJs("$0.getElementsByTagName('textarea')[0].setAttribute(\"theme\",\"ksm-priority\");", component.getElement());
         }
         component.getElement().getThemeList().add(KSM_SECTION_PRIORITY_HINT);
     }
