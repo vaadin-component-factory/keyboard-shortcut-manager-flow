@@ -229,7 +229,11 @@ export class KeyboardShortcutManagerFlow extends LitElement {
 
   private static getSortedFocusableChildren(scope: HTMLElement) {
     let focusableElements = KeyboardShortcutUtils.getFocusableElements(scope);
-    focusableElements = focusableElements.filter((el: any)=> KeyboardShortcutUtils.isFocusable(el));
+    // remove all elements inside Grids for performance, unless they've been marked with the priority theme
+    focusableElements = focusableElements.filter((el: any) =>
+        (this.isPriority(el) ||
+            (el.getRootNode()?.host?.tagName !== "VAADIN-GRID") && (el.closest("vaadin-grid") === null)));
+    focusableElements = focusableElements.filter((el: any)=> (KeyboardShortcutUtils.isFocusable(el)));
     let implementationSpecificNodes = focusableElements.filter( (el: any) => {
       if (this.isPriority(el)) {
         return false;

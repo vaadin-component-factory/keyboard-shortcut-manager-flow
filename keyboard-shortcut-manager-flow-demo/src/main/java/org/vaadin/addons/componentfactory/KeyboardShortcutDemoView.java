@@ -1,9 +1,5 @@
 package org.vaadin.addons.componentfactory;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import com.vaadin.componentfactory.lookupfield.LookupField;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Key;
@@ -22,6 +18,10 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 @Route("")
 @CssImport(value = "demo-styles.css")
@@ -49,10 +49,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
             TextField name = new TextField("name");
             TextField address = new TextField("address");
             VerticalLayout personContainer = new VerticalLayout(new H6("Person " + i));
-            List<Person> people = Arrays.asList(
-                    new Person("Nicolaus Copernicus", "123 Street Rd."),
-                    new Person("Galileo Galilei", "456 Highway Ave."),
-                    new Person("Johannes Kepler", "789 Road St."));
+            List<Person> people = Arrays.asList(new Person("Nicolaus Copernicus", "123 Street Rd."), new Person("Galileo Galilei", "456 Highway Ave."), new Person("Johannes Kepler", "789 Road St."), new Person("Nicolaus Copernicus", "123 Street Rd."), new Person("Galileo Galilei", "456 Highway Ave."), new Person("Johannes Kepler", "789 Road St."), new Person("Nicolaus Copernicus", "123 Street Rd."));
 
             personContainer.setId("person-" + i);
             personContainer.addClassName("person");
@@ -68,11 +65,8 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
             addresses.put(addressId, address);
 
             Binder<Person> binder = new Binder<>();
-            binder.forField(name)
-                    .asRequired(new StringLengthValidator("Must be at least 3 Characters long", 3, 10))
-                    .bind(Person::getName, Person::setName);
-            binder.forField(address).asRequired(new StringLengthValidator("Must be at least 3 Characters long", 3, 10))
-                    .bind(Person::getAddress, Person::setAddress);
+            binder.forField(name).asRequired(new StringLengthValidator("Must be at least 3 Characters long", 3, 10)).bind(Person::getName, Person::setName);
+            binder.forField(address).asRequired(new StringLengthValidator("Must be at least 3 Characters long", 3, 10)).bind(Person::getAddress, Person::setAddress);
             binder.validate();
 
             if (i == 1) {
@@ -95,10 +89,12 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
                 grid.setItems(people);
                 grid.addColumn(Person::getName).setHeader("Name");
                 grid.addColumn(Person::getAddress).setHeader("Address");
+                for (int j = 0; j < 15; j++) {
+                    final int x = j;
+                    grid.addComponentColumn(p -> new TextField(p.getName() + x)).setHeader("Column " + j);
+                }
                 grid.setAllRowsVisible(true);
-                grid.getStyle()
-                        .set("margin-top", "var(--lumo-space-m)")
-                        .set("max-width", "400px");
+                grid.getStyle().set("margin-top", "var(--lumo-space-m)").set("max-width", "1400px");
                 personContainer.add(grid);
             }
 
@@ -136,24 +132,7 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
 
     private KeyboardShortcutManager createKeyboardShortcutManager() {
         KeyboardShortcutManager keyboardShortcutManager = new KeyboardShortcutManager(this);
-        KeyboardShortcut[] shortcuts = new KeyboardShortcut[] {
-                new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.ALT, Key.F1),
-                new KeyboardShortcut("", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8),
-                new KeyboardShortcut("", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT,
-                        Key.F8),
-                new KeyboardShortcut("#person-1", KeyboardShortcut.Actions.clearAllFields, KeyboardShortcut.MOD,
-                        Key.KEY_K),
-                new KeyboardShortcut("#submit", "", KeyboardShortcut.Actions.clickElement,
-                        KeyboardShortcut.MOD, Key.KEY_B),
-                new KeyboardShortcut("#submit", "", KeyboardShortcut.Actions.clickElement,
-                        Key.CONTROL, Key.SHIFT, Key.KEY_B),
-                new KeyboardShortcut("#address-2", "#person-2", KeyboardShortcut.Actions.focusElement,
-                        KeyboardShortcut.MOD, Key.KEY_F),
-                new KeyboardShortcut(".person", "", KeyboardShortcut.Actions.focusNextElement,
-                        Key.CONTROL, Key.SHIFT, Key.ARROW_RIGHT),
-                new KeyboardShortcut(".person", "", KeyboardShortcut.Actions.focusPreviousElement,
-                        Key.CONTROL, Key.SHIFT, Key.ARROW_LEFT)
-        };
+        KeyboardShortcut[] shortcuts = new KeyboardShortcut[]{new KeyboardShortcut("", KeyboardShortcut.Actions.helpDialog, Key.ALT, Key.F1), new KeyboardShortcut("", KeyboardShortcut.Actions.focusNextInvalidField, Key.ALT, Key.F8), new KeyboardShortcut("", KeyboardShortcut.Actions.focusPreviousInvalidField, Key.ALT, Key.SHIFT, Key.F8), new KeyboardShortcut("#person-1", KeyboardShortcut.Actions.clearAllFields, KeyboardShortcut.MOD, Key.KEY_K), new KeyboardShortcut("#submit", "", KeyboardShortcut.Actions.clickElement, KeyboardShortcut.MOD, Key.KEY_B), new KeyboardShortcut("#submit", "", KeyboardShortcut.Actions.clickElement, Key.CONTROL, Key.SHIFT, Key.KEY_B), new KeyboardShortcut("#address-2", "#person-2", KeyboardShortcut.Actions.focusElement, KeyboardShortcut.MOD, Key.KEY_F), new KeyboardShortcut(".person", "", KeyboardShortcut.Actions.focusNextElement, Key.CONTROL, Key.SHIFT, Key.ARROW_RIGHT), new KeyboardShortcut(".person", "", KeyboardShortcut.Actions.focusPreviousElement, Key.CONTROL, Key.SHIFT, Key.ARROW_LEFT)};
 
         keyboardShortcutManager.addShortcut(shortcuts);
         return keyboardShortcutManager;
