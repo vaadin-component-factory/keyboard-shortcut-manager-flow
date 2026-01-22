@@ -40,7 +40,7 @@ import java.util.Objects;
 
 @Tag("keyboard-shortcut-manager-flow")
 @JsModule("./keyboard-shortcut-manager-flow.ts")
-@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "24.0.1")
+@NpmPackage(value = "@vaadin-component-factory/keyboard-shortcut-manager", version = "25.0.0")
 public class KeyboardShortcutManager extends Component {
 
     private final Component component;
