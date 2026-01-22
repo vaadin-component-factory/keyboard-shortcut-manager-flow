@@ -3,7 +3,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow-root</artifactId>
-    <version>24.0.1</version>
+    <version>25.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>keyboard-shortcut-manager-flow</module>
@@ -12,14 +12,7 @@
 
     <name>Keyboard Shortcut Manager Flow</name>
     <description>Keyboard Shortcut Manager Flow</description>
-
-    <properties>
-        <vaadin.version>24.3.9</vaadin.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+    
     <inceptionYear>2020</inceptionYear>
     <organization>
         <name>Vaadin Ltd</name>
@@ -32,22 +25,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>keyboard-shortcut-manager-flow</artifactId>
-                <version>${keyboard-shortcut-manager-flow.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-bom</artifactId>
-                <type>pom</type>
-                <scope>import</scope>
-                <version>${vaadin.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    
     <repositories>
         <repository>
             <id>Vaadin Directory</id>
