@@ -21,3 +21,5 @@ webpack.generated.js
 **/frontend/generated
 vite-devmode.ts
 vite.generated.ts
+.settings
+.classpath
