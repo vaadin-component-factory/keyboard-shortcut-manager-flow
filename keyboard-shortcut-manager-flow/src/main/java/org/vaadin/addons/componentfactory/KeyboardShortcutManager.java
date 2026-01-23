@@ -4,7 +4,7 @@ package org.vaadin.addons.componentfactory;
  * #%L
  * keyboard-shortcut-manager-flow
  * %%
- * Copyright (C) 2020 Vaadin Ltd
+ * Copyright (C) 2020 -2026 Vaadin Ltd
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,20 @@ package org.vaadin.addons.componentfactory;
  * #L%
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.messages.MessageInput;
 import com.vaadin.flow.component.upload.Upload;
-import elemental.json.Json;
-import elemental.json.JsonArray;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
 
 @Tag("keyboard-shortcut-manager-flow")
 @JsModule("./keyboard-shortcut-manager-flow.ts")
@@ -94,15 +91,11 @@ public class KeyboardShortcutManager extends Component {
         return this;
     }
 
-    public static JsonArray listToJson(List<?> list) {
+    public static ArrayNode listToJson(List<?> list) {
         Objects.requireNonNull(list, "Cannot convert null to JSON");
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return (JsonArray) Json.instance().parse(objectMapper.writeValueAsString(list));
-        } catch (JsonProcessingException var2) {
-            throw new RuntimeException("Error converting list to JSON", var2);
-        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.valueToTree(list);
     }
 
     /**
