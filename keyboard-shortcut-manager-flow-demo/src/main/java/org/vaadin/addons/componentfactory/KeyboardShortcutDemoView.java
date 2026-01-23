@@ -162,5 +162,10 @@ public class KeyboardShortcutDemoView extends VerticalLayout {
         public void setAddress(String address) {
             this.address = address;
         }
+        
+        @Override
+        public String toString() {
+          return name;
+        }
     }
 }
