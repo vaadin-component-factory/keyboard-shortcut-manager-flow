@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>keyboard-shortcut-manager-flow</artifactId>
-    <version>25.0.0-SNAPSHOT</version>
+    <version>25.0.0</version>
     <packaging>jar</packaging>
 
     <name>VCF Keyboard Shortcut Manager Flow</name>
